@@ -2,6 +2,7 @@ package br.org.serratec.api.cel.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.org.serratec.api.cel.config.Mapper;
 import br.org.serratec.api.cel.model.Endereco;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -16,16 +17,9 @@ public record ViaCEPDTO(
 		String ddd
 		
 		) {
-	
+	 
 	public Endereco toEntity() {
-		return new Endereco(
-				this.cep, 
-				this.logradouro, 
-				this.complemento, 
-				this.bairro, 
-				this.localidade, 
-				this.uf);
-				
+		return Mapper.getMapper().convertValue(this,  Endereco.class);
 	}
 	
 }
