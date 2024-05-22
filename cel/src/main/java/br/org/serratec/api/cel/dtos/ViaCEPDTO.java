@@ -16,7 +16,7 @@ public record ViaCEPDTO(
 		String ddd
 		
 		) {
-	
+	 
 	public Endereco toEntity() {
 		return new Endereco(
 				this.cep, 
