@@ -49,6 +49,14 @@ public class PedidoService {
 		return pedidoRepositorio.findAll()
 				.stream().map(p -> PedidoDto.toDto(p)).toList();
 	}
+	
+	public Optional<PedidoDto> obterPedidoPorId(Long id){
+		Optional<Pedido> pedidoEntity = pedidoRepositorio.findById(id);
+		if(pedidoEntity.isPresent()) {
+			return Optional.of(PedidoDto.toDto(pedidoEntity.get()));
+		}
+		return Optional.empty();
+	}
 
 
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {
@@ -60,6 +68,26 @@ public class PedidoService {
 	public Cliente cadastrarPedido(Cliente cliente) {
 		return clienteRepositorio.save(cliente);
 			
+	}
+	
+	public Optional<PedidoDto> atulizarPedido(Long id,PedidoDto pedido){
+		if(pedidoRepositorio.existsById(id)) {
+			Pedido pedidoEntity = pedido.toEntity();
+			pedidoEntity.setId(id);
+			pedidoRepositorio.save(pedidoEntity);
+			return Optional.of(PedidoDto.toDto(pedidoEntity));
+		}
+		
+		return Optional.empty();
+	}
+	
+	public boolean deletarPedido(Long id) {
+		Optional<Pedido> pedido = pedidoRepositorio.findById(id);
+		if(pedido.isEmpty()){
+			return false;
+		}
+		pedidoRepositorio.deleteById(id);
+		return true;
 	}
 
 }

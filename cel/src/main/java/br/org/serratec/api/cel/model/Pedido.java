@@ -3,7 +3,7 @@ package br.org.serratec.api.cel.model;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.org.serratec.api.cel.dtos.PedidoDto;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
