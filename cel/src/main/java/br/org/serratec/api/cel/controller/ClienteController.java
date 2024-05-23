@@ -42,6 +42,8 @@ public class ClienteController {
 	
 	@PostMapping
 	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO cliente) {
+		
+		
 		return new ResponseEntity<>(servico.cadastraCliente(cliente), HttpStatus.CREATED);
 	}
 	

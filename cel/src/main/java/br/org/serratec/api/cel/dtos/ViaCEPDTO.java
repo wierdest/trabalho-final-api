@@ -6,7 +6,6 @@ import br.org.serratec.api.cel.config.Mapper;
 import br.org.serratec.api.cel.model.Endereco;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public record ViaCEPDTO(
 		String cep,
 		String logradouro,
@@ -20,6 +19,11 @@ public record ViaCEPDTO(
 	 
 	public Endereco toEntity() {
 		return Mapper.getMapper().convertValue(this,  Endereco.class);
+	}
+	
+	public static ViaCEPDTO toDTO(Endereco entity) {
+		return Mapper.getMapper().convertValue(entity,  ViaCEPDTO.class);
+
 	}
 	
 }

@@ -3,13 +3,14 @@ package br.org.serratec.api.cel.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.api.cel.dtos.ClienteDTO;
+import br.org.serratec.api.cel.dtos.ViaCEPDTO;
 import br.org.serratec.api.cel.model.Cliente;
+import br.org.serratec.api.cel.model.Endereco;
 import br.org.serratec.api.cel.repository.ClienteRepository;
 import jakarta.validation.Valid;
 
@@ -17,26 +18,53 @@ import jakarta.validation.Valid;
 public class ClienteService {
 
 	@Autowired
+	ConverteJSON conversorJSON;
+
+	@Autowired
 	private ClienteRepository repositorio;
 	
-	public List<ClienteDTO> obtterTodos() {
-        return repositorio.findAll().stream()
-                          .map(cliente -> toDto(cliente))
-                          .collect(Collectors.toList());
-    }
-
-    public ClienteDTO toDto(Cliente cliente) {
-        return new ClienteDTO(cliente.getId(), cliente.getNome_completo(), cliente.getEmail(), cliente.getCpf(), cliente.getTelefone(), cliente.getDataNascimento());
-    }
-
+//	public List<ClienteDTO> obterTodos() {
+//        return repositorio.findAll().stream()
+//                          .map(cliente -> ClienteDTO.toDto(cliente))
+//                          .collect(Collectors.toList());
+//    }
 
 	public List<ClienteDTO> obterTodos() {
-		return repositorio.findAll().stream().map(cliente -> toDto(cliente)).toList();
+		
+		return repositorio.findAll().stream().map(cliente -> ClienteDTO.toDto(cliente)).toList();
 	}
 
 	public ClienteDTO cadastraCliente(ClienteDTO cliente) {
-		Cliente clienteEntity = repositorio.save(cliente.toEntity());
-		return ClienteDTO.toDto(clienteEntity);
+		// pega o endereço pelo cep
+		
+		// validar o cep, claro, quando fizermos a parte de validação
+		Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.cep());
+		// fazer = olhar os requisitos de validação do endereço
+		
+		if(enderecoDTO.isPresent()) {
+			// endereço
+			Endereco enderecoEntity = enderecoDTO.get().toEntity();
+			Cliente clienteEntity = cliente.toEntity();
+			clienteEntity.setEndereco(enderecoEntity);
+			
+			repositorio.save(clienteEntity);
+			
+			return ClienteDTO.toDto(clienteEntity);
+		}
+		return null;
+	}
+	
+	public Optional<ViaCEPDTO> obterEndereco(String cep) {
+		var json = ViaCEPService.obterDados(cep);
+		ViaCEPDTO dto = conversorJSON.converter(json, ViaCEPDTO.class);
+		if(dto == null) {
+			// provavelmente erro 500 ou algo de errado com o formato que veio
+			return Optional.empty();
+		}
+		if(dto.cep() == null || dto.bairro() == null) {
+			return Optional.empty();
+		}
+		return Optional.of(dto);
 	}
 	
 	public Optional<ClienteDTO> obterClientePorId(Long id) {
@@ -48,11 +76,27 @@ public class ClienteService {
 	}
 	
 	public Optional<ClienteDTO> atualizarCliente(Long id, @Valid ClienteDTO cliente) {
-		if (repositorio.existsById(id)) {
-			Cliente clienteEntity = cliente.toEntity();
-			clienteEntity.setId(id);
-			repositorio.save(clienteEntity);
-			return Optional.of(ClienteDTO.toDto(clienteEntity));
+		
+		Optional<Cliente> clienteNoRepositorio = repositorio.findById(id);
+		Cliente novoCliente = cliente.toEntity();
+
+		if(clienteNoRepositorio.isPresent()) {
+			Cliente clienteVelho = clienteNoRepositorio.get();
+			if(clienteVelho.getEndereco().getCep() != cliente.cep()) {
+				// cliente com o cep diferente, precisa atualizar o endereço
+				// obtem novo endereço
+				// validar o cep, claro, quando fizermos a parte de validação
+				Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.cep());
+				// fazer = olhar os requisitos de validação do endereço
+				if(enderecoDTO.isPresent()) {
+					Endereco enderecoEntity = enderecoDTO.get().toEntity();
+					novoCliente.setEndereco(enderecoEntity);
+				}
+			}
+			novoCliente.setId(id);
+			repositorio.save(novoCliente);
+			return Optional.of(ClienteDTO.toDto(novoCliente));
+			
 		}
 		return Optional.empty();
 	}
@@ -60,7 +104,6 @@ public class ClienteService {
 	
 	public boolean excluirCliente(Long id) {
 		Optional<Cliente> cliente = repositorio.findById(id);
-		
 		if(cliente.isEmpty()){
 			return false;
 		}

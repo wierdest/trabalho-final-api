@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.api.cel.model.Endereco;
 import br.org.serratec.api.cel.model.Pedido;
+import br.org.serratec.api.cel.service.ConverteJSON;
 import br.org.serratec.api.cel.service.PedidoService;
 
 @RestController
