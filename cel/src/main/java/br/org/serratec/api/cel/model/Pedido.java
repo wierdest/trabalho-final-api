@@ -3,6 +3,7 @@ package br.org.serratec.api.cel.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import br.org.serratec.api.cel.dtos.PedidoDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,14 +27,31 @@ public class Pedido {
 	private String descricao;
 	
 	@ManyToOne
-	//private Cliente cliente;
+	private Cliente cliente;
 	
-	@OneToMany(mappedBy = "pedido")
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itemPedido;
 	
 	public Pedido() {
 		
 	}
+	
+	
+
+	public Pedido(Long id, LocalDate dataPedido, LocalDate dataEntrega, String status, double valorTotal,
+			String descricao, Cliente cliente, List<ItemPedido> itemPedido) {
+		super();
+		this.id = id;
+		this.dataPedido = dataPedido;
+		this.dataEntrega = dataEntrega;
+		this.status = status;
+		this.valorTotal = valorTotal;
+		this.descricao = descricao;
+		this.cliente = cliente;
+		this.itemPedido = itemPedido;
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -91,10 +109,16 @@ public class Pedido {
 		this.itemPedido = itemPedido;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 	
-	
-	
-	
+
 	
 	
 }

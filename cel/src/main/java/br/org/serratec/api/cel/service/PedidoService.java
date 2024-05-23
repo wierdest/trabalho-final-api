@@ -6,10 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.dtos.ViaCEPDTO;
+import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.model.Endereco;
 import br.org.serratec.api.cel.model.Pedido;
+import br.org.serratec.api.cel.repository.ClienteRepository;
 import br.org.serratec.api.cel.repository.PedidoRepository;
+import jakarta.validation.Valid;
 
 @Service
 public class PedidoService {
@@ -18,8 +22,10 @@ public class PedidoService {
 	ConverteJSON conversorJSON;
 	
 	@Autowired
-	PedidoRepository repositorio;
-	//
+	PedidoRepository pedidoRepositorio;
+	
+	@Autowired
+	ClienteRepository clienteRepositorio;
 	
 	
 	public Optional<Endereco> conferirCep(String cep) {
@@ -39,13 +45,21 @@ public class PedidoService {
 	}
 
 
-	public List<Pedido> obterTodos() {
-		return repositorio.findAll();
+	public List<PedidoDto> obterTodos() {
+		return pedidoRepositorio.findAll()
+				.stream().map(p -> PedidoDto.toDto(p)).toList();
 	}
 
 
-	public Pedido cadastrarPedido(Pedido pedido) {
-		return repositorio.save(pedido);
+	public PedidoDto cadastrarPedido(PedidoDto pedido) {
+		Pedido pedidoEntity = pedido.toEntity();
+		pedidoRepositorio.save(pedidoEntity);
+		return PedidoDto.toDto(pedidoEntity);
+	}
+	
+	public Cliente cadastrarPedido(Cliente cliente) {
+		return clienteRepositorio.save(cliente);
+			
 	}
 
 }
