@@ -25,7 +25,7 @@ public class Pedido {
 	private double valorTotal;
 	private String descricao;
 	
-	@ManyToOne
+	//@ManyToOne
 	//private Cliente cliente;
 	
 	@OneToMany(mappedBy = "pedido")
