@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +36,6 @@ public class Pedido {
 	public Pedido() {
 		
 	}
-	
 	
 
 	public Pedido(Long id, LocalDate dataPedido, LocalDate dataEntrega, String status, double valorTotal,

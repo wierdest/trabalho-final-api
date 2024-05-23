@@ -25,16 +25,11 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/clientes")
-
 public class ClienteController {
 	
 	@Autowired
 	PedidoService service;
 	
-	@PostMapping
-	public Cliente cadastrarCliente(@RequestBody Cliente cliente) {
-		return service.cadastrarPedido(cliente);
-	}
 
 	@Autowired
 	private ClienteService servico;

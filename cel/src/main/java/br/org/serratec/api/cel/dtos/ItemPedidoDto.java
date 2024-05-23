@@ -2,6 +2,7 @@ package br.org.serratec.api.cel.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.org.serratec.api.cel.config.Mapper;
 import br.org.serratec.api.cel.model.ItemPedido;
 import br.org.serratec.api.cel.model.Pedido;
 import br.org.serratec.api.cel.model.Produto;
@@ -17,17 +18,13 @@ public record ItemPedidoDto(
 		Produto produto
 		) {
 	
+	  
 	  public ItemPedido toEntity() {
-	        return new ItemPedido(
-	                this.id,
-	                this.quantidade,
-	                this.precoVenda,
-	                this.percentualDesconto,
-	                this.valorBruto,
-	                this.valorLiquido,
-	                this.pedido,
-	                this.produto
-	        );
+	        return Mapper.getMapper().convertValue(this, ItemPedido.class);
 	    }
+	  
+	  public static ItemPedidoDto toDto(ItemPedido itemPedido) {
+		  return Mapper.getMapper().convertValue(itemPedido, ItemPedidoDto.class);
+	  }
 
 }

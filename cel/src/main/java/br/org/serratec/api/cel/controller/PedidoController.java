@@ -24,7 +24,7 @@ import br.org.serratec.api.cel.service.PedidoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/celulares")
+@RequestMapping("/pedidos")
 public class PedidoController {
 	
 	@Autowired

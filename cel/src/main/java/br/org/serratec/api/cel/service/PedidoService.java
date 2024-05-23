@@ -1,6 +1,7 @@
 package br.org.serratec.api.cel.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class PedidoService {
 	
 	@Autowired
 	ClienteRepository clienteRepositorio;
+	
+	@Autowired
+	ClienteService clienteService;
 	
 	
 	public Optional<Endereco> conferirCep(String cep) {
@@ -60,7 +64,15 @@ public class PedidoService {
 
 
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {
+		Cliente clienteNovo = pedido.cliente().toEntity();
+		
+		if(pedido.cliente().id() == null) {		
+			clienteNovo = clienteService.cadastraCliente(pedido.cliente()).toEntity();
+		}
+		
 		Pedido pedidoEntity = pedido.toEntity();
+		pedidoEntity.setCliente(clienteNovo);	
+		
 		pedidoRepositorio.save(pedidoEntity);
 		return PedidoDto.toDto(pedidoEntity);
 	}

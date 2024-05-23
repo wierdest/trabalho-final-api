@@ -107,9 +107,7 @@ public class ClienteService {
 		if(cliente.isEmpty()){
 			return false;
 		}
-		
-		cliente.get();
-		repositorio.save(cliente.get());
+			
 		repositorio.excluirCliente(id);
 		return true;
 	}
