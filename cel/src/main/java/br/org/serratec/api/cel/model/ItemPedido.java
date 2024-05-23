@@ -24,7 +24,6 @@ public class ItemPedido {
 	private double valorLiquido;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "pedido_id")
     private Pedido pedido;
 	
 	
