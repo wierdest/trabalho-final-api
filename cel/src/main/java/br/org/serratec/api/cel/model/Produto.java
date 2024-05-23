@@ -2,6 +2,7 @@ package br.org.serratec.api.cel.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -28,6 +30,9 @@ public class Produto {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name= "id_categoria", referencedColumnName= "id")
 	private Categoria idCategoria;
+	
+	@OneToMany(mappedBy = "produto")
+	private List<ItemPedido> itemPedido;
 	
 	public Produto() {}
 
