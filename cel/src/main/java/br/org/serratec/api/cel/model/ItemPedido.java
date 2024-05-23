@@ -1,18 +1,15 @@
 package br.org.serratec.api.cel.model;
 
-import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "itens_pedidos")
 public class ItemPedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +20,38 @@ public class ItemPedido {
 	private double valorBruto;
 	private double valorLiquido;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
     private Pedido pedido;
 	
+pedidoquasela
+	@ManyToOne
+	private Produto produto;
+	
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Produto produto;
+ main
 	
 	public ItemPedido() {
 		
 	}
+	
+	
+
+	public ItemPedido(Long id, int quantidade, double precoVenda, int percentualDesconto, double valorBruto,
+			double valorLiquido, Pedido pedido, Produto produto) {
+		super();
+		this.id = id;
+		this.quantidade = quantidade;
+		this.precoVenda = precoVenda;
+		this.percentualDesconto = percentualDesconto;
+		this.valorBruto = valorBruto;
+		this.valorLiquido = valorLiquido;
+		this.pedido = pedido;
+		this.produto = produto;
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -86,9 +108,17 @@ public class ItemPedido {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
 	
-	//@ManyToOne
-	//private List<Produto> produto;
+	
+	
 	
 
 }
