@@ -26,10 +26,9 @@ public class Produto {
 	private LocalDate dataCadastro;
 	private BigDecimal valorUnitario;
 	private String imagem;
-	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name= "id_categoria", referencedColumnName= "id")
-	private Categoria idCategoria;
+	private Categoria categoria;
 	
 	@OneToMany(mappedBy = "produto")
 	private List<ItemPedido> itemPedido;
@@ -37,7 +36,7 @@ public class Produto {
 	public Produto() {}
 
 	public Produto(Long id, String nome, String descricao, int qtdEstoque, LocalDate dataCadastro,
-			BigDecimal valorUnitario, String imagem, Categoria idCategoria) {
+			BigDecimal valorUnitario, String imagem, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -46,7 +45,7 @@ public class Produto {
 		this.dataCadastro = dataCadastro;
 		this.valorUnitario = valorUnitario;
 		this.imagem = imagem;
-		this.idCategoria = idCategoria;
+		this.categoria = categoria;
 	}
 
 	public Long getId() {
@@ -105,12 +104,22 @@ public class Produto {
 		this.imagem = imagem;
 	}
 
-	public Categoria getIdCategoria() {
-		return idCategoria;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setIdCategoria(Categoria idCategoria) {
-		this.idCategoria = idCategoria;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
+
+	public List<ItemPedido> getItemPedido() {
+		return itemPedido;
+	}
+
+	public void setItemPedido(List<ItemPedido> itemPedido) {
+		this.itemPedido = itemPedido;
+	}
+	
+	
 	
 }

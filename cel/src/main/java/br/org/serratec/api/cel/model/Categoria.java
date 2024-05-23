@@ -47,6 +47,10 @@ public class Categoria {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
+	public Categoria toDto(Categoria categoria) {
+		return new Categoria(this.id, this.nome, this.descricao);
+	}
 	
 	
 }
