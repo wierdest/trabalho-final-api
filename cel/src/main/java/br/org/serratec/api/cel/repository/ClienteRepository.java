@@ -1,5 +1,14 @@
 package br.org.serratec.api.cel.repository;
 
+ pedidoquasela
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.org.serratec.api.cel.model.Cliente;
+
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+
+}
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,3 +29,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 		
 		
 }
+ main
