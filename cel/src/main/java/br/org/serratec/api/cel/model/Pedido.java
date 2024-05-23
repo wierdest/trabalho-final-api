@@ -26,15 +26,12 @@ public class Pedido {
 	private double valorTotal;
 	private String descricao;
 	
- pedidoquasela
+
 	@ManyToOne
 	private Cliente cliente;
 
-	//@ManyToOne
-	//private Cliente cliente;
- main
 	
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itemPedido;
 	
 	public Pedido() {
