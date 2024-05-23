@@ -1,13 +1,10 @@
 package br.org.serratec.api.cel.model;
 
-import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -26,9 +23,14 @@ public class ItemPedido {
 	@ManyToOne
     private Pedido pedido;
 	
+pedidoquasela
 	@ManyToOne
 	private Produto produto;
 	
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Produto produto;
+ main
 	
 	public ItemPedido() {
 		
