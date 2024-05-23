@@ -23,14 +23,10 @@ public class ItemPedido {
 	@ManyToOne
     private Pedido pedido;
 	
-pedidoquasela
-	@ManyToOne
-	private Produto produto;
-	
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Produto produto;
- main
+
 	
 	public ItemPedido() {
 		

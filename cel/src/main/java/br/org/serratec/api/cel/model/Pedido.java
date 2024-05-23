@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,21 +25,17 @@ public class Pedido {
 	private double valorTotal;
 	private String descricao;
 	
- pedidoquasela
+
 	@ManyToOne
 	private Cliente cliente;
 
-	//@ManyToOne
-	//private Cliente cliente;
- main
 	
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itemPedido;
 	
 	public Pedido() {
 		
 	}
-	
 	
 
 	public Pedido(Long id, LocalDate dataPedido, LocalDate dataEntrega, String status, double valorTotal,

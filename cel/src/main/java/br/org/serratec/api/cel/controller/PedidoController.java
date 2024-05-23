@@ -18,16 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.model.Endereco;
-clientecontroller
-import br.org.serratec.api.cel.model.Pedido;
-import br.org.serratec.api.cel.service.ConverteJSON;
 
-main
+
 import br.org.serratec.api.cel.service.PedidoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/celulares")
+@RequestMapping("/pedidos")
 public class PedidoController {
 	
 	@Autowired
