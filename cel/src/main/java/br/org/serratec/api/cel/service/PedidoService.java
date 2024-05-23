@@ -43,4 +43,9 @@ public class PedidoService {
 		return repositorio.findAll();
 	}
 
+
+	public Pedido cadastrarPedido(Pedido pedido) {
+		return repositorio.save(pedido);
+	}
+
 }
