@@ -42,18 +42,8 @@ public record ProdutoDto(
     }
 	
 	public static ProdutoDto toDto(Produto produto) {
-		ProdutoDto produtoDto = new ProdutoDto(
-				produto.getId(),			
-				produto.getNome(),
-				produto.getDescricao(),
-				produto.getQtdEstoque(),
-				produto.getDataCadastro(),
-				produto.getValorUnitario(),
-				produto.getImagem(),
-				produto.getCategoria()		
-				);	
 		
-		return produtoDto;
+		return Mapper.getMapper().convertValue(produto, ProdutoDto.class);
 	}
 
 }

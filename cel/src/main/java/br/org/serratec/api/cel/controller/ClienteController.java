@@ -49,15 +49,15 @@ public class ClienteController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO cliente) {
+	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody ClienteDTO cliente) {
 		
 		
-		return new ResponseEntity<>(servico.cadastraCliente(cliente), HttpStatus.CREATED);
+		return new ResponseEntity<>(servico.cadastraOuAcessaCliente(cliente), HttpStatus.CREATED);
 	}
 	
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ClienteDTO> atualizar(@PathVariable Long id, @RequestBody @Valid ClienteDTO cliente) {
+	public ResponseEntity<ClienteDTO> atualizar(@PathVariable Long id, @RequestBody ClienteDTO cliente) {
 		Optional<ClienteDTO> dto = servico.atualizarCliente(id, cliente);
 		
 		if (dto.isEmpty()) {

@@ -9,34 +9,24 @@ import br.org.serratec.api.cel.model.Cliente;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 public record ClienteDTO(
-		Long id,
+        Long id,
         String nome_completo, 
         String email, 
         String cpf, 
         String telefone,
-        String cep,
+        ViaCEPDTO endereco,
         LocalDate dataNascimento
-        
+
         ) {
 
-	public Cliente toEntity() {
-		
-	    return Mapper.getMapper().convertValue(this, Cliente.class);
-	}
-	
-	public static ClienteDTO toDto(Cliente clienteEntity) {
-		ClienteDTO cliente = new ClienteDTO(
-				clienteEntity.getId(),
-				clienteEntity.getNome_completo(),
-				clienteEntity.getEmail(),
-				clienteEntity.getCpf(),
-				clienteEntity.getTelefone(),
-				clienteEntity.getEndereco().getCep(),
-				clienteEntity.getDataNascimento()
-				);
-		return cliente;
-	}
+    public Cliente toEntity() {
+
+        return Mapper.getMapper().convertValue(this, Cliente.class);
+    }
+
+    public static ClienteDTO toDto(Cliente clienteEntity) {
+
+        return Mapper.getMapper().convertValue(clienteEntity, ClienteDTO.class);
+    }
 }
-
-
 

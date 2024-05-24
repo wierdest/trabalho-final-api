@@ -1,5 +1,8 @@
 package br.org.serratec.api.cel.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,14 +19,14 @@ public class ItemPedido {
 	private Long id;
 	private int quantidade;
 	private double precoVenda;
-	private int percentualDesconto;
+	private double percentualDesconto;
 	private double valorBruto;
 	private double valorLiquido;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
+	@JsonBackReference
     private Pedido pedido;
 	
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Produto produto;
 
@@ -32,8 +35,6 @@ public class ItemPedido {
 		
 	}
 	
-	
-
 	public ItemPedido(Long id, int quantidade, double precoVenda, int percentualDesconto, double valorBruto,
 			double valorLiquido, Pedido pedido, Produto produto) {
 		super();
@@ -73,11 +74,11 @@ public class ItemPedido {
 		this.precoVenda = precoVenda;
 	}
 
-	public int getPercentualDesconto() {
+	public double getPercentualDesconto() {
 		return percentualDesconto;
 	}
 
-	public void setPercentualDesconto(int percentualDesconto) {
+	public void setPercentualDesconto(double percentualDesconto) {
 		this.percentualDesconto = percentualDesconto;
 	}
 
