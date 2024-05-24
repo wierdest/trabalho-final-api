@@ -1,18 +1,24 @@
 package br.org.serratec.api.cel.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.org.serratec.api.cel.dtos.ClienteDTO;
+import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.dtos.ViaCEPDTO;
 import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.model.Endereco;
+import br.org.serratec.api.cel.model.ItemPedido;
 import br.org.serratec.api.cel.model.Pedido;
 import br.org.serratec.api.cel.repository.ClienteRepository;
+import br.org.serratec.api.cel.repository.ItemPedidoRepository;
 import br.org.serratec.api.cel.repository.PedidoRepository;
 import jakarta.validation.Valid;
 
@@ -30,6 +36,9 @@ public class PedidoService {
 	
 	@Autowired
 	ClienteService clienteService;
+	
+	@Autowired
+	ItemPedidoRepository itemRepositorio;
 	
 	
 	public Optional<Endereco> conferirCep(String cep) {
@@ -63,18 +72,28 @@ public class PedidoService {
 	}
 
 
-	public PedidoDto cadastrarPedido(PedidoDto pedido) {
-		Cliente clienteNovo = pedido.cliente().toEntity();
+	public PedidoDto cadastrarPedido(PedidoDto pedido) {	
+		ClienteDTO cliente = clienteService.cadastraCliente(pedido.cliente());
+
+        Pedido pedidoACadastrar = pedido.toEntity();
+
+        pedidoACadastrar.setCliente(cliente.toEntity());
+	    
+	    List<ItemPedido> itensPedido = pedido.itemPedido().stream()
+	            .map(ItemPedidoDto::toEntity)
+	            .collect(Collectors.toList());
 		
-		if(pedido.cliente().id() == null) {		
-			clienteNovo = clienteService.cadastraCliente(pedido.cliente()).toEntity();
-		}
+		 if (pedido.itemPedido() != null) {
+		              
+		        itensPedido.forEach(item -> item.setPedido(pedidoACadastrar)); 
+		        pedidoACadastrar.setItemPedido(itensPedido);
+		    }
+		 							
+		itensPedido = itemRepositorio.saveAll(itensPedido);	
 		
-		Pedido pedidoEntity = pedido.toEntity();
-		pedidoEntity.setCliente(clienteNovo);	
-		
-		pedidoRepositorio.save(pedidoEntity);
-		return PedidoDto.toDto(pedidoEntity);
+		pedidoRepositorio.save(pedidoACadastrar);
+		System.out.println("ok");
+		return PedidoDto.toDto(pedidoACadastrar);
 	}
 	
 	public Cliente cadastrarPedido(Cliente cliente) {

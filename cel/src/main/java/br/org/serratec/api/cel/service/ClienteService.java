@@ -35,24 +35,25 @@ public class ClienteService {
 	}
 
 	public ClienteDTO cadastraCliente(ClienteDTO cliente) {
-		// pega o endereço pelo cep
-		
-		// validar o cep, claro, quando fizermos a parte de validação
-		Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.cep());
-		// fazer = olhar os requisitos de validação do endereço
-		
-		if(enderecoDTO.isPresent()) {
-			// endereço
-			Endereco enderecoEntity = enderecoDTO.get().toEntity();
-			Cliente clienteEntity = cliente.toEntity();
-			clienteEntity.setEndereco(enderecoEntity);
-			
-			repositorio.save(clienteEntity);
-			
-			return ClienteDTO.toDto(clienteEntity);
-		}
-		return null;
-	}
+
+        ViaCEPDTO enderecoACadastrar = cliente.endereco();
+        if(enderecoACadastrar == null || enderecoACadastrar.cep() == "") {
+            System.out.println("Endereço nulo ou sem CEP!");
+            return null;
+        } 
+
+        Cliente clienteEntity = cliente.toEntity();
+
+        Optional<ViaCEPDTO> enderecoObtido = obterEndereco(enderecoACadastrar.cep());
+        if(enderecoObtido.isPresent()) {
+            System.out.println("Encontrou endereço!");
+            Endereco endereco = enderecoObtido.get().toEntity();
+
+            clienteEntity.setEndereco(endereco);
+        }
+
+        return ClienteDTO.toDto(clienteEntity);
+    }
 	
 	public Optional<ViaCEPDTO> obterEndereco(String cep) {
 		var json = ViaCEPService.obterDados(cep);
@@ -82,11 +83,11 @@ public class ClienteService {
 
 		if(clienteNoRepositorio.isPresent()) {
 			Cliente clienteVelho = clienteNoRepositorio.get();
-			if(clienteVelho.getEndereco().getCep() != cliente.cep()) {
+			if(clienteVelho.getEndereco().getCep() != cliente.endereco().cep()) {
 				// cliente com o cep diferente, precisa atualizar o endereço
 				// obtem novo endereço
 				// validar o cep, claro, quando fizermos a parte de validação
-				Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.cep());
+				Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.endereco().cep());
 				// fazer = olhar os requisitos de validação do endereço
 				if(enderecoDTO.isPresent()) {
 					Endereco enderecoEntity = enderecoDTO.get().toEntity();

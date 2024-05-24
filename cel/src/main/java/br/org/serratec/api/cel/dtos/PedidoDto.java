@@ -29,23 +29,7 @@ public record PedidoDto(
     }
 	
 	public static PedidoDto toDto(Pedido pedido) {
-		List<ItemPedidoDto> itens = new ArrayList<ItemPedidoDto>();
-		pedido.getItemPedido().forEach(i -> {
-			itens.add(ItemPedidoDto.toDto(i));
-		});
-		
-		PedidoDto pedidoDto = new PedidoDto(
-				pedido.getId(),			
-				pedido.getDataPedido(),
-				pedido.getDataEntrega(),
-				pedido.getStatus(),
-				pedido.getValorTotal(),
-				ClienteDTO.toDto(pedido.getCliente()),
-				pedido.getDescricao(),
-				itens			
-				);	
-		
-		return pedidoDto;
-	}
+		return Mapper.getMapper().convertValue(pedido, PedidoDto.class);
+    }
 
 }
