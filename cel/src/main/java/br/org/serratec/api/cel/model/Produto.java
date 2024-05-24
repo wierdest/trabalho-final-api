@@ -32,8 +32,9 @@ public class Produto {
 	@JoinColumn(name= "id_categoria", referencedColumnName= "id")
 	private Categoria categoria;
 	
-	@OneToMany(mappedBy = "produto", cascade=CascadeType.ALL)
 	@JsonIgnore
+	@OneToMany(mappedBy = "produto")
+
 	private List<ItemPedido> itemPedido;
 	
 	public Produto() {}
