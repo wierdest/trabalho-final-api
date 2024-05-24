@@ -37,7 +37,7 @@ public class PedidoController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<PedidoDto>> obterTodos() {
+	public ResponseEntity<List<PedidoDto>> obterTodoss() {
 		return ResponseEntity.ok(servico.obterTodos());
 	}
 	
@@ -58,7 +58,7 @@ public class PedidoController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<PedidoDto> atulizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){
-		Optional<PedidoDto> pedidoDto = servico.atulizarPedido(id, pedido);
+		Optional<PedidoDto> pedidoDto = servico.atualizarPedido(id, pedido);
 		if(pedidoDto.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

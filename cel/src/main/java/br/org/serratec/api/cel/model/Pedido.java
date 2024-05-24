@@ -33,7 +33,7 @@ public class Pedido {
 	private Cliente cliente;
 
 	
-	@OneToMany(mappedBy = "pedido")
+	@OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL )
 	@JsonManagedReference
 	private List<ItemPedido> itemPedido = new ArrayList<ItemPedido>();
 	
