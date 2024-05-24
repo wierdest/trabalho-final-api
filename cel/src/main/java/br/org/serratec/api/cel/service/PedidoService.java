@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.api.cel.dtos.ClienteDTO;
+import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.model.ItemPedido;
 import br.org.serratec.api.cel.model.Pedido;
@@ -25,9 +26,6 @@ public class PedidoService {
 	PedidoRepository pedidoRepositorio;
 	
 	@Autowired
-	ClienteRepository clienteRepositorio;
-	
-	@Autowired
 	ClienteService clienteService;
 	
 	public List<PedidoDto> obterTodos() {
@@ -43,26 +41,43 @@ public class PedidoService {
 	}
 
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {	
-		ClienteDTO cliente = clienteService.cadastraCliente(pedido.cliente());
+		
+		ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
+		
         Pedido pedidoACadastrar = pedido.toEntity();
+        
         pedidoACadastrar.setCliente(cliente.toEntity());
+        
         List<ItemPedido> itensPedido = new ArrayList<>();
-        pedido.itensPedido().forEach(i -> {
+        Double valorTotalPedido = 0.0;
+        
+        for(ItemPedidoDto i : pedido.itensPedido()) {
         	ItemPedido item = i.toEntity();
+        	// fazer = conferir o desconto
+        	valorTotalPedido += item.getValorLiquido() * item.getQuantidade();
         	item.setPedido(pedidoACadastrar);
         	itensPedido.add(item);
-        });
+        }
         
+        pedidoACadastrar.setValorTotal(valorTotalPedido);
         pedidoACadastrar.setItensPedido(itensPedido);
 		pedidoRepositorio.save(pedidoACadastrar);
 		System.out.println("ok");
+		
 		return PedidoDto.toDto(pedidoACadastrar);
+	
 	}
 	
 	public Optional<PedidoDto> atualizarPedido(Long id,PedidoDto pedido){
 		if(pedidoRepositorio.existsById(id)) {
 			Pedido pedidoEntity = pedido.toEntity();
+			
+			ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
+			
+			pedidoEntity.setCliente(cliente.toEntity());
+			
 			pedidoEntity.setId(id);
+			
 			pedidoRepositorio.save(pedidoEntity);
 			return Optional.of(PedidoDto.toDto(pedidoEntity));
 		}

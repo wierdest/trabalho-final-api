@@ -48,7 +48,7 @@ public class ProdutoController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<ProdutoDto> atulizarProduto(@PathVariable Long id, @RequestBody @Valid ProdutoDto produto){
-		Optional<ProdutoDto> produtoDto = servico.atulizar(id, produto);
+		Optional<ProdutoDto> produtoDto = servico.atualizar(id, produto);
 		if(produtoDto.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

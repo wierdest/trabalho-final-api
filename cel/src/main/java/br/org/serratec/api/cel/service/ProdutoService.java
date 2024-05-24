@@ -31,12 +31,12 @@ public class ProdutoService {
 	
 	public ProdutoDto cadastrar(ProdutoDto produto) {
 		Produto produtoEntity = produto.toEntity();	
-	repositorio.save(produtoEntity);
+		repositorio.save(produtoEntity);
 		return ProdutoDto.toDto(produtoEntity);
 	}
 	
 	
-	public Optional<ProdutoDto> atulizar(Long id,ProdutoDto produto){
+	public Optional<ProdutoDto> atualizar(Long id,ProdutoDto produto){
 		if(repositorio.existsById(id)) {
 			Produto produtoEntity = produto.toEntity();
 			produtoEntity.setId(id);

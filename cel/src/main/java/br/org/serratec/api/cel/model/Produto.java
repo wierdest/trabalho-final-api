@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +32,8 @@ public class Produto {
 	@JoinColumn(name= "id_categoria", referencedColumnName= "id")
 	private Categoria categoria;
 	
-	@OneToMany(mappedBy = "produto")
+	@OneToMany(mappedBy = "produto", cascade=CascadeType.ALL)
+	@JsonIgnore
 	private List<ItemPedido> itemPedido;
 	
 	public Produto() {}

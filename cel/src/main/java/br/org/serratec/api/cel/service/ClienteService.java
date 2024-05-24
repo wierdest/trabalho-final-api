@@ -22,36 +22,62 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repositorio;
 	
-//	public List<ClienteDTO> obterTodos() {
-//        return repositorio.findAll().stream()
-//                          .map(cliente -> ClienteDTO.toDto(cliente))
-//                          .collect(Collectors.toList());
-//    }
-
 	public List<ClienteDTO> obterTodos() {
 		
 		return repositorio.findAll().stream().map(cliente -> ClienteDTO.toDto(cliente)).toList();
 	}
-
-	public ClienteDTO cadastraCliente(ClienteDTO cliente) {
-
-        ViaCEPDTO enderecoACadastrar = cliente.endereco();
-        if(enderecoACadastrar == null || enderecoACadastrar.cep() == "") {
+	
+	private Cliente criaClienteNovoComEndereco(ClienteDTO cliente) {
+		ViaCEPDTO enderecoACadastrar;
+		Cliente clienteEntity;
+		// cadastra um novo cliente
+		clienteEntity = cliente.toEntity();
+		enderecoACadastrar = cliente.endereco();
+		 if(enderecoACadastrar == null || enderecoACadastrar.cep() == "") {
             System.out.println("Endereço nulo ou sem CEP!");
-            return null;
-        } 
+			throw new IllegalArgumentException("Cliente sem CEP! Não é possível cadastrar um cliente sem CEP!");
+		 } 
+		 else {
+        	// obtem o endereço do cliente novo
+    		Optional<ViaCEPDTO> enderecoObtido = obterEndereco(enderecoACadastrar.cep());
+	        if(enderecoObtido.isPresent()) {
+	            System.out.println("Encontrou endereço!");
+	            Endereco endereco = enderecoObtido.get().toEntity();
+	            clienteEntity.setEndereco(endereco);
+	        }
+		 }
+		 
+         return clienteEntity;
+	}
 
-        Cliente clienteEntity = cliente.toEntity();
-
-        Optional<ViaCEPDTO> enderecoObtido = obterEndereco(enderecoACadastrar.cep());
-        if(enderecoObtido.isPresent()) {
-            System.out.println("Encontrou endereço!");
-            Endereco endereco = enderecoObtido.get().toEntity();
-
-            clienteEntity.setEndereco(endereco);
-        }
-
-        return ClienteDTO.toDto(clienteEntity);
+	public ClienteDTO cadastraOuAcessaCliente(ClienteDTO cliente) {
+		
+		Cliente clienteEntity = cliente.toEntity();
+		
+		if(cliente.id() == null) {
+			
+			Optional<Cliente> clientePorCPF = repositorio.findByCpf(cliente.cpf());
+			if(clientePorCPF.isPresent()) {
+				throw new IllegalArgumentException("CPF já cadastrado! Impossível cadastrar cliente!");
+			}
+			
+			Optional<Cliente> clientePorEmail= repositorio.findByEmail(cliente.email());
+			if(clientePorEmail.isPresent()) {
+				throw new IllegalArgumentException("EMAIL já cadastrado! Impossível cadastrar cliente!");
+			}
+			
+			clienteEntity = criaClienteNovoComEndereco(cliente);
+			return ClienteDTO.toDto(repositorio.save(clienteEntity));
+			
+		} else {
+			
+			Optional<Cliente > clienteNoRepo = repositorio.findById(cliente.id());
+			if(clienteNoRepo.isPresent()) {
+				return ClienteDTO.toDto(clienteEntity);
+			} else {
+				throw new IllegalArgumentException("Id do cliente é inválida!!");
+			}
+		}
     }
 	
 	public Optional<ViaCEPDTO> obterEndereco(String cep) {
@@ -100,7 +126,6 @@ public class ClienteService {
 		}
 		return Optional.empty();
 	}
-	
 	
 	public boolean excluirCliente(Long id) {
 		Optional<Cliente> cliente = repositorio.findById(id);

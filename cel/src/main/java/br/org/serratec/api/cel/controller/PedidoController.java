@@ -46,12 +46,12 @@ public class PedidoController {
 	
 	
 	@PostMapping
-	public ResponseEntity<PedidoDto> cadastrarPedido(@Valid @RequestBody PedidoDto pedido){
+	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody PedidoDto pedido){
 		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){
+	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody PedidoDto pedido){
 		Optional<PedidoDto> pedidoDto = servico.atualizarPedido(id, pedido);
 		if(pedidoDto.isEmpty()) {
 			return ResponseEntity.notFound().build();
