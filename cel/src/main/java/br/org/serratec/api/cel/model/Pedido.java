@@ -33,9 +33,9 @@ public class Pedido {
 	private Cliente cliente;
 
 	
-	@OneToMany(mappedBy = "pedido")
+	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL)
 	@JsonManagedReference
-	private List<ItemPedido> itemPedido = new ArrayList<ItemPedido>();
+	private List<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
 	
 	public Pedido() {
 		
@@ -52,7 +52,7 @@ public class Pedido {
 		this.valorTotal = valorTotal;
 		this.descricao = descricao;
 		this.cliente = cliente;
-		this.itemPedido = itemPedido;
+		this.itensPedido = itemPedido;
 	}
 
 
@@ -105,12 +105,12 @@ public class Pedido {
 		this.descricao = descricao;
 	}
 
-	public List<ItemPedido> getItemPedido() {
-		return itemPedido;
+	public List<ItemPedido> getItensPedido() {
+		return itensPedido;
 	}
 
-	public void setItemPedido(List<ItemPedido> itemPedido) {
-		this.itemPedido = itemPedido;
+	public void setItensPedido(List<ItemPedido> itemPedido) {
+		this.itensPedido = itemPedido;
 	}
 
 	public Cliente getCliente() {

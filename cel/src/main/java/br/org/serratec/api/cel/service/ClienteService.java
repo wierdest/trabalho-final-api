@@ -12,7 +12,6 @@ import br.org.serratec.api.cel.dtos.ViaCEPDTO;
 import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.model.Endereco;
 import br.org.serratec.api.cel.repository.ClienteRepository;
-import jakarta.validation.Valid;
 
 @Service
 public class ClienteService {
@@ -76,7 +75,7 @@ public class ClienteService {
 		return Optional.empty();
 	}
 	
-	public Optional<ClienteDTO> atualizarCliente(Long id, @Valid ClienteDTO cliente) {
+	public Optional<ClienteDTO> atualizarCliente(Long id, ClienteDTO cliente) {
 		
 		Optional<Cliente> clienteNoRepositorio = repositorio.findById(id);
 		Cliente novoCliente = cliente.toEntity();

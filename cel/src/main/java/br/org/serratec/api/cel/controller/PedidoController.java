@@ -30,12 +30,6 @@ public class PedidoController {
 	@Autowired
 	PedidoService servico;
 	
-	@GetMapping("/teste-endereco/{cep}")
-	public ResponseEntity<Endereco> conferirDadosViaCep(@PathVariable String cep) {
-		
-		return ResponseEntity.ok(servico.conferirCep(cep).get());
-	}
-	
 	@GetMapping
 	public ResponseEntity<List<PedidoDto>> obterTodos() {
 		return ResponseEntity.ok(servico.obterTodos());
@@ -57,8 +51,8 @@ public class PedidoController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<PedidoDto> atulizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){
-		Optional<PedidoDto> pedidoDto = servico.atulizarPedido(id, pedido);
+	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){
+		Optional<PedidoDto> pedidoDto = servico.atualizarPedido(id, pedido);
 		if(pedidoDto.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

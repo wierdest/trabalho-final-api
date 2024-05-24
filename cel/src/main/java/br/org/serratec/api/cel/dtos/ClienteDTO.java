@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.org.serratec.api.cel.config.Mapper;
 import br.org.serratec.api.cel.model.Cliente;
-import br.org.serratec.api.cel.model.Endereco;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 public record ClienteDTO(
