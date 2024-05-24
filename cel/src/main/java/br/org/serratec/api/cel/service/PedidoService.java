@@ -69,7 +69,6 @@ public class PedidoService {
 			item.setValorLiquido(valorLiquido);
 			
 			
-			
 			itensPedido.add(item);
 			valorTotal += valorLiquido;
 		}
@@ -86,9 +85,17 @@ public class PedidoService {
 
 	public Optional<PedidoDto> atualizarPedido(Long id, PedidoDto pedido) {
 		if (pedidoRepositorio.existsById(id)) {
-			Pedido pedidoEntity = pedido.toEntity();
 			
-			ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
+			Optional<Pedido> pedidoNoRepo = pedidoRepositorio.findById(id);
+			
+			if(pedidoNoRepo.isEmpty()) {
+				throw new IllegalArgumentException("Id Inválida do Pedido!!");
+			}
+			
+			Pedido pedidoEntity = pedidoNoRepo.get();
+			ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(
+					ClienteDTO.toDto(pedidoEntity.getCliente())
+					);
 			
 			pedidoEntity.setCliente(cliente.toEntity());
 			
