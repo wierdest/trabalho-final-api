@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import br.org.serratec.api.cel.dtos.PedidoDto;
-import br.org.serratec.api.cel.model.Endereco;
 
 
 import br.org.serratec.api.cel.service.PedidoService;
@@ -31,7 +30,7 @@ public class PedidoController {
 	PedidoService servico;
 	
 	@GetMapping
-	public ResponseEntity<List<PedidoDto>> obterTodos() {
+	public ResponseEntity<List<PedidoDto>> obterTodoss() {
 		return ResponseEntity.ok(servico.obterTodos());
 	}
 	
@@ -51,7 +50,9 @@ public class PedidoController {
 	}
 	
 	@PutMapping("/{id}")
+
 	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){
+
 		Optional<PedidoDto> pedidoDto = servico.atualizarPedido(id, pedido);
 		if(pedidoDto.isEmpty()) {
 			return ResponseEntity.notFound().build();
