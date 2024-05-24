@@ -14,8 +14,8 @@ public record ItemPedidoDto(
 		int percentualDesconto,
 		double valorBruto,
 		double valorLiquido,
-		Pedido pedido,
-		Produto produto
+		PedidoDto pedido,
+		ProdutoDto produto
 		) {
 	
 	  
