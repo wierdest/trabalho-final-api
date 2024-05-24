@@ -12,8 +12,6 @@ import br.org.serratec.api.cel.dtos.ClienteDTO;
 import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 
-
-
 import br.org.serratec.api.cel.model.ItemPedido;
 import br.org.serratec.api.cel.model.Pedido;
 import br.org.serratec.api.cel.repository.ClienteRepository;
@@ -30,9 +28,11 @@ public class PedidoService {
 	PedidoRepository pedidoRepositorio;
 
 	@Autowired
+
 	ClienteRepository clienteRepositorio;
 
 	@Autowired
+
 	ClienteService clienteService;
 
 	public List<PedidoDto> obterTodos() {
@@ -48,9 +48,10 @@ public class PedidoService {
 	}
 	
 
-	public PedidoDto cadastrarPedido(PedidoDto pedido) {
-		ClienteDTO cliente = clienteService.cadastraCliente(pedido.cliente());
-
+	public PedidoDto cadastrarPedido(PedidoDto pedido) {	
+		
+		ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
+		
 		Pedido pedidoACadastrar = pedido.toEntity();
 		pedidoACadastrar.setCliente(cliente.toEntity());
 
@@ -78,13 +79,21 @@ public class PedidoService {
 		
 		pedidoRepositorio.save(pedidoACadastrar);
 		System.out.println("ok");
+		
 		return PedidoDto.toDto(pedidoACadastrar);
+	
 	}
 
 	public Optional<PedidoDto> atualizarPedido(Long id, PedidoDto pedido) {
 		if (pedidoRepositorio.existsById(id)) {
 			Pedido pedidoEntity = pedido.toEntity();
+			
+			ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
+			
+			pedidoEntity.setCliente(cliente.toEntity());
+			
 			pedidoEntity.setId(id);
+			
 			pedidoRepositorio.save(pedidoEntity);
 			return Optional.of(PedidoDto.toDto(pedidoEntity));
 		}

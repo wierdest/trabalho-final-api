@@ -22,9 +22,11 @@ public class Cliente {
 	private String email;
 	private String cpf;
 	private String telefone;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+	
 	private LocalDate dataNascimento;
 	
 	public Long getId() {

@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -36,6 +34,7 @@ public class Produto {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "produto")
+
 	private List<ItemPedido> itemPedido;
 	
 	public Produto() {}

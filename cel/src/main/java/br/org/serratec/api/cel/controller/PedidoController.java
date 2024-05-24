@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,13 +42,12 @@ public class PedidoController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 	}
 	
-	
+
 	@PostMapping
-	public ResponseEntity<PedidoDto> cadastrarPedido(@Valid @RequestBody PedidoDto pedido){
+	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody PedidoDto pedido){
 		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/{id}")
 
 	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){
 

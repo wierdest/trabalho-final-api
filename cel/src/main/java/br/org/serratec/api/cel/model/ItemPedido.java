@@ -27,7 +27,6 @@ public class ItemPedido {
 	@JsonBackReference
     private Pedido pedido;
 	
-
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Produto produto;
 
@@ -36,8 +35,6 @@ public class ItemPedido {
 		
 	}
 	
-	
-
 	public ItemPedido(Long id, int quantidade, double precoVenda, int percentualDesconto, double valorBruto,
 			double valorLiquido, Pedido pedido, Produto produto) {
 		super();

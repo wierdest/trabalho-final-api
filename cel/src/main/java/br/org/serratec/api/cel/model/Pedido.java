@@ -29,7 +29,7 @@ public class Pedido {
 	private String descricao;
 	
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Cliente cliente;
 
 	
