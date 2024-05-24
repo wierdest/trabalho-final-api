@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.org.serratec.api.cel.config.Mapper;
 import br.org.serratec.api.cel.model.ItemPedido;
-import br.org.serratec.api.cel.model.Pedido;
-import br.org.serratec.api.cel.model.Produto;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ItemPedidoDto(
 		Long id,

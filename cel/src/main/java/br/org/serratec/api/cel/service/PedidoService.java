@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.api.cel.dtos.ClienteDTO;
-import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.model.ItemPedido;
 import br.org.serratec.api.cel.model.Pedido;
@@ -34,27 +33,7 @@ public class PedidoService {
 	public List<PedidoDto> obterTodos() {
 		return pedidoRepositorio.findAll().stream().map(p -> PedidoDto.toDto(p)).toList();
 	}
-//	public List<PedidoDto> obterTodos() {
-//		List<PedidoDto> pedidosDtos = new ArrayList<>();
-//		List<Pedido> pedidosNoRep = pedidoRepositorio.findAll();
-//		for(Pedido p : pedidosNoRep) {
-//			List<ItemPedido> itensPedido = p.getItensPedido();
-//			List<ItemPedidoDto> itensPedidoDto = new ArrayList<ItemPedidoDto>();
-//			for(ItemPedido i: itensPedido) {
-//				itensPedidoDto.add(ItemPedidoDto.toDto(i));
-//			}
-//			
-//			PedidoDto pedidoDto = PedidoDto.toDto(p);
-//			pedidoDto.
-//			
-//			
-//			
-//			pedidosDtos.add(PedidoDto.toDto(p));
-//		}
-//		
-//		return pedidosDtos;
-//	}
-	
+
 	public Optional<PedidoDto> obterPedidoPorId(Long id){
 		Optional<Pedido> pedidoEntity = pedidoRepositorio.findById(id);
 		if(pedidoEntity.isPresent()) {
@@ -63,13 +42,10 @@ public class PedidoService {
 		return Optional.empty();
 	}
 
-
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {	
 		ClienteDTO cliente = clienteService.cadastraCliente(pedido.cliente());
         Pedido pedidoACadastrar = pedido.toEntity();
         pedidoACadastrar.setCliente(cliente.toEntity());
-        
-        
         List<ItemPedido> itensPedido = new ArrayList<>();
         pedido.itensPedido().forEach(i -> {
         	ItemPedido item = i.toEntity();
