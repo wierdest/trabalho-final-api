@@ -1,5 +1,7 @@
 package br.org.serratec.api.cel.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +22,8 @@ public class ItemPedido {
 	private double valorBruto;
 	private double valorLiquido;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
+	@JsonBackReference
     private Pedido pedido;
 	
 

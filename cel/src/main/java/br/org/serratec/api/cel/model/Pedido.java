@@ -1,9 +1,12 @@
 package br.org.serratec.api.cel.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,12 +29,13 @@ public class Pedido {
 	private String descricao;
 	
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Cliente cliente;
 
 	
 	@OneToMany(mappedBy = "pedido")
-	private List<ItemPedido> itemPedido;
+	@JsonManagedReference
+	private List<ItemPedido> itemPedido = new ArrayList<ItemPedido>();
 	
 	public Pedido() {
 		
