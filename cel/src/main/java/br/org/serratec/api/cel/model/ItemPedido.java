@@ -19,7 +19,7 @@ public class ItemPedido {
 	private Long id;
 	private int quantidade;
 	private double precoVenda;
-	private int percentualDesconto;
+	private double percentualDesconto;
 	private double valorBruto;
 	private double valorLiquido;
 	
@@ -77,11 +77,11 @@ public class ItemPedido {
 		this.precoVenda = precoVenda;
 	}
 
-	public int getPercentualDesconto() {
+	public double getPercentualDesconto() {
 		return percentualDesconto;
 	}
 
-	public void setPercentualDesconto(int percentualDesconto) {
+	public void setPercentualDesconto(double percentualDesconto) {
 		this.percentualDesconto = percentualDesconto;
 	}
 

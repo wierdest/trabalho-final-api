@@ -9,7 +9,7 @@ public record ItemPedidoDto(
 		Long id,
 		int quantidade,
 		double precoVenda,
-		int percentualDesconto,
+		double percentualDesconto,
 		double valorBruto,
 		double valorLiquido,
 		PedidoDto pedido,
