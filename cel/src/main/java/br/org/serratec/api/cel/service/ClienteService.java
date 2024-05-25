@@ -1,7 +1,6 @@
 package br.org.serratec.api.cel.service;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +47,28 @@ public class ClienteService {
 		}
     }
 	
+	public Optional<ClienteDTO> atualizarCliente(Long id, ClienteDTO cliente) {
+		Optional<Cliente> clienteNoRepositorio = repositorio.findById(id);
+		Cliente novoCliente = cliente.toEntity();
+
+		if(clienteNoRepositorio.isPresent()) {
+			
+			Cliente clienteVelho = clienteNoRepositorio.get();
+			if(clienteVelho.getEndereco().getCep() != cliente.endereco().cep()) {
+				Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.endereco().cep());
+				if(enderecoDTO.isPresent()) {
+					Endereco enderecoEntity = enderecoDTO.get().toEntity();
+					novoCliente.setEndereco(enderecoEntity);
+				}
+			}
+			novoCliente.setId(clienteVelho.getId());
+			repositorio.save(novoCliente);
+			return Optional.of(ClienteDTO.toDto(novoCliente));
+			
+		}
+		throw new IllegalArgumentException("Id do cliente é inválida!!");
+	}
+
 	private Cliente criaClienteNovoComEndereco(ClienteDTO cliente) {
 		 Cliente clienteEntity;
 		 clienteEntity = cliente.toEntity();
@@ -100,28 +121,6 @@ public class ClienteService {
 		return Optional.empty();
 	}
 	
-	
-	public Optional<ClienteDTO> atualizarCliente(Long id, ClienteDTO cliente) {
-		Optional<Cliente> clienteNoRepositorio = repositorio.findById(id);
-		Cliente novoCliente = cliente.toEntity();
-
-		if(clienteNoRepositorio.isPresent()) {
-			
-			Cliente clienteVelho = clienteNoRepositorio.get();
-			if(clienteVelho.getEndereco().getCep() != cliente.endereco().cep()) {
-				Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.endereco().cep());
-				if(enderecoDTO.isPresent()) {
-					Endereco enderecoEntity = enderecoDTO.get().toEntity();
-					novoCliente.setEndereco(enderecoEntity);
-				}
-			}
-			novoCliente.setId(clienteVelho.getId());
-			repositorio.save(novoCliente);
-			return Optional.of(ClienteDTO.toDto(novoCliente));
-			
-		}
-		throw new IllegalArgumentException("Id do cliente é inválida!!");
-	}
 	
 	public boolean excluirCliente(Long id) {
 		Optional<Cliente> cliente = repositorio.findById(id);

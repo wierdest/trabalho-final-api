@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.service.PedidoService;
 import jakarta.validation.Valid;
@@ -42,7 +44,7 @@ public class PedidoController {
 	
 
 	@PostMapping
-	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody PedidoDto pedido){
+	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
 		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
 	}
 	
@@ -59,6 +61,26 @@ public class PedidoController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletarPedido(@PathVariable Long id){
 		if(!servico.deletarPedido(id)) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	//---------------ControllerItemPedido-----------------------
+	@PutMapping("/item-pedido/{id}")
+	public ResponseEntity<ItemPedidoDto> atualizarItemPedido(@PathVariable Long id, @RequestBody @Valid ItemPedidoDto itemPedido){
+
+		Optional<ItemPedidoDto> ItemPedidoDto = servico.atualizarItemPedido(id, itemPedido);
+		if(ItemPedidoDto.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(ItemPedidoDto.get());
+	}
+	
+	@DeleteMapping("/item-pedido/{id}")
+	public ResponseEntity<Void> deletarItemPedido(@PathVariable Long id){
+		if(!servico.deletarItemPedido(id)) {
 			return ResponseEntity.notFound().build();
 		}
 		

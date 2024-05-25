@@ -42,7 +42,7 @@ public class ProdutoController {
 	
 	
 	@PostMapping
-	public ResponseEntity<ProdutoDto> cadastrarProduto(@Valid @RequestBody ProdutoDto produto){
+	public ResponseEntity<ProdutoDto> cadastrarProduto(@RequestBody @Valid ProdutoDto produto){
 		return new ResponseEntity<ProdutoDto>(servico.cadastrar(produto), HttpStatus.CREATED);
 	}
 	

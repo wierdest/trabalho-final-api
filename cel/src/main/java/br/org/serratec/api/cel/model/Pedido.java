@@ -28,12 +28,10 @@ public class Pedido {
 	private double valorTotal;
 	private String descricao;
 	
-
 	@ManyToOne
 	private Cliente cliente;
 
 	
-
 	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private List<ItemPedido> itensPedido = new ArrayList<ItemPedido>();
