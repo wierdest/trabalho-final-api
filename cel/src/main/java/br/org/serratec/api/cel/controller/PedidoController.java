@@ -30,7 +30,7 @@ public class PedidoController {
 	PedidoService servico;
 	
 	@GetMapping
-	public ResponseEntity<List<PedidoDto>> obterTodoss() {
+	public ResponseEntity<List<PedidoDto>> obterTodos() {
 		return ResponseEntity.ok(servico.obterTodos());
 	}
 	
@@ -45,15 +45,17 @@ public class PedidoController {
 	
 	@GetMapping("/relatorio-pedido/{id}")
 	public ResponseEntity<RelatorioPedidoDTO> obterRelatorioPedido(@PathVariable Long id) {
-		Optional<PedidoDto> pedidoDto = servico.obterPedidoPorId(id);
-		if(pedidoDto.isPresent()) {
-			RelatorioPedidoDTO relatorio = 
+		Optional<PedidoDto> pedidoDtoOptional= servico.obterPedidoPorId(id);
+		if(pedidoDtoOptional.isPresent()) {
+			
+			PedidoDto pedidoDto = pedidoDtoOptional.get();
+				
+			
+			return ResponseEntity.ok(pedidoDto.toRelatorio());
 		}
-
 		return ResponseEntity.notFound().build();
 	}
 	
-
 	@PostMapping
 	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
 		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
