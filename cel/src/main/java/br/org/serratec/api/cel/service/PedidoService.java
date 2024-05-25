@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.api.cel.dtos.ClienteDTO;
@@ -35,8 +37,10 @@ public class PedidoService {
 	@Autowired
 	ItemPedidoRepository itemRepositorio;
 
-	public List<PedidoDto> obterTodos() {
-		return pedidoRepositorio.findAll().stream().map(PedidoDto::toDto).toList();
+	public Page<PedidoDto> obterTodos(Pageable pageable) {
+		Page<PedidoDto> pedidos = pedidoRepositorio.findAll(pageable).map(c ->
+		PedidoDto.toDto(c));
+		return pedidos;
 	}
 
 	public Optional<PedidoDto> obterPedidoPorId(Long id) {
