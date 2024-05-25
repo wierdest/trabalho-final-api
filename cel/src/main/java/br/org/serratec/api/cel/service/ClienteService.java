@@ -116,15 +116,15 @@ public class ClienteService {
 		return Optional.of(dto);
 	}
 	
-//	public Optional<ClienteDTO> obterClientePorId(Long id) {
-//		Optional<Cliente> clienteEntity = repositorio.findById(id);
-//		if (clienteEntity.isEmpty()) {
-//			return Optional.of(ClienteDTO.toDto(clienteEntity.get()));
-//		}
-//		return Optional.empty();
-//	}
+	public Optional<ClienteDTO> obterClientePorId(Long id) {
+		Optional<Cliente> clienteEntity = repositorio.findById(id);
+		if (clienteEntity.isEmpty()) {
+			return Optional.of(ClienteDTO.toDto(clienteEntity.get()));
+		}
+		return Optional.empty();
+	}
 	
-	public Cliente obterClientePorId(Long id) {
+	public Cliente obterClientePorIdPedido(Long id) {
         return  repositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
     }

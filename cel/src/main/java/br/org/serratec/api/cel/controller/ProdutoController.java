@@ -1,9 +1,12 @@
 package br.org.serratec.api.cel.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.api.cel.dtos.ProdutoDto;
-import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
 import br.org.serratec.api.cel.service.ProdutoService;
 import jakarta.validation.Valid;
 
@@ -28,8 +30,10 @@ public class ProdutoController {
 	ProdutoService servico;
 	
 	@GetMapping
-	public ResponseEntity<List<ProdutoDto>> obterTodos() {
-		return ResponseEntity.ok(servico.obterTodos());
+	public ResponseEntity<Page<ProdutoDto>> obterTodos(
+			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) Pageable pageable
+			) {
+		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")

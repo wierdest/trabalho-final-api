@@ -1,9 +1,12 @@
 package br.org.serratec.api.cel.service;
 
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.api.cel.dtos.ProdutoDto;
@@ -21,8 +24,15 @@ public class ProdutoService {
 	@Autowired
     private CategoriaRepository categoriaRepositorio;
 	
+
 	public List<ProdutoDto> obterTodos() {
 		return repositorio.findAll().stream().map(p -> ProdutoDto.toDto(p)).toList();
+	}
+
+	public Page<ProdutoDto> obterTodos(Pageable pageable) {
+		Page<ProdutoDto> produtos = repositorio.findAll(pageable).map(c ->
+		ProdutoDto.toDto(c));
+		return produtos;
 	}
 	
 	public Optional<ProdutoDto> obterPorId(Long id){
@@ -37,8 +47,6 @@ public class ProdutoService {
         return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 	
-	
-	
 	public ProdutoDto cadastrar(ProdutoDto produto) {
 		Produto produtoEntity = produto.toEntity();	
 
@@ -46,7 +54,6 @@ public class ProdutoService {
             throw new IllegalArgumentException("Já existe um produto com essa descrição");
         }
 
-        // 
         Optional<Categoria> categoriaOptional = categoriaRepositorio.findByNomeIgnoreCase(produto.categoria().getNome());
         Categoria categoria;
 

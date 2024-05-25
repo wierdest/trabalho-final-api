@@ -1,9 +1,12 @@
 package br.org.serratec.api.cel.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
+=======
+import br.org.serratec.api.cel.dtos.ClienteDTO;
+>>>>>>> refs/remotes/origin/main
 import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
@@ -29,9 +36,11 @@ public class PedidoController {
 	PedidoService servico;
 	
 	@GetMapping
-	public ResponseEntity<List<PedidoDto>> obterTodos() {
-		return ResponseEntity.ok(servico.obterTodos());
+	public ResponseEntity<Page<PedidoDto>> obterTodos(
+			@PageableDefault(size=2, page=0, sort="id", direction=Sort.Direction.ASC) Pageable pageable) {
+		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
+	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PedidoDto> obterPedidoPorId(@PathVariable Long id) {

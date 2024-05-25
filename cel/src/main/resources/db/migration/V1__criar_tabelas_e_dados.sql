@@ -13,7 +13,11 @@ CREATE TABLE IF NOT EXISTS public.clientes
     localidade varchar(120),
     logradouro varchar(120),
     uf varchar(2)
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> refs/remotes/origin/main
 );
 
 CREATE TABLE IF NOT EXISTS public.categorias
