@@ -14,9 +14,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ProdutoDto(
 		Long id,
+
 		@NotBlank(message = "O nome não pode estar em branco.")
 		String nome,
 		@NotBlank(message = "A descrição não pode estar em branco.")
@@ -26,8 +28,11 @@ public record ProdutoDto(
 		@PastOrPresent(message = "A data de cadastro não pode ser no futuro.")
 		LocalDate dataCadastro,
 		@DecimalMin(value = "0.0", inclusive = false, message = "O valor unitário deve ser positivo.")
+
 		BigDecimal valorUnitario,
+	    @NotBlank(message = "A URL da imagem não pode estar vazia")
 		String imagem,
+
 		@NotNull(message = "A categoria não pode estar em branco.")
 		Categoria categoria
 		) {
