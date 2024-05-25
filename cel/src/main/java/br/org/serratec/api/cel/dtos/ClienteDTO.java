@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Pattern;
 public record ClienteDTO(
         Long id,
         @NotBlank(message = "Digite o nome completo.")
-        String nome_completo, 
+        String nome, 
         @NotBlank
         @Email(message =  "Informe um e-mail válido com @.")
         String email, 
