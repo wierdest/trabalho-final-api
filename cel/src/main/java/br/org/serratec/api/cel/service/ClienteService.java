@@ -1,7 +1,7 @@
 package br.org.serratec.api.cel.service;
 
 
-import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,6 @@ public class ClienteService {
         );
         return clientes;
     }
-	
 	
 	
 	public ClienteDTO cadastraOuAcessaCliente(ClienteDTO cliente) {

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.service.PedidoService;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -33,18 +33,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/clientes")
 public class ClienteController {
 	
-	@Autowired
-	PedidoService service;
-	
 
 	@Autowired
 	private ClienteService servico;
-	/*
-	@GetMapping
-	public ResponseEntity<Page<ClienteDTO>> obterTodos() {
-		return new ResponseEntity<>(servico.obterTodos(), HttpStatus.OK);
-	}
-	*/
 	
 	@GetMapping
     public ResponseEntity<Page<ClienteDTO>> obterTodos(
@@ -65,8 +56,7 @@ public class ClienteController {
 	*/
 	@PostMapping
 	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO cliente) {
-		
-		
+	
 		return new ResponseEntity<>(servico.cadastraOuAcessaCliente(cliente), HttpStatus.CREATED);
 	}
 	

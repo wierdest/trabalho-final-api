@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "clientes")
+@Table(name="clientes")
 public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +25,6 @@ public class Cliente {
 	
 	protected Cliente() {}
 	
-	public Cliente(Long id, String nome, String email, String cpf, String telefone, Endereco endereco,
-			LocalDate dataNascimento) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.cpf = cpf;
-		this.telefone = telefone;
-		this.endereco = endereco;
-		this.dataNascimento = dataNascimento;
-	}
 
 	private LocalDate dataNascimento;
 	
@@ -45,8 +34,7 @@ public class Cliente {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
+
 
 	public String getNome() {
 		return nome;

@@ -16,7 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "pedidos")
+@Table(name="pedidos")
 public class Pedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,8 +53,6 @@ public class Pedido {
 		this.cliente = cliente;
 		this.itensPedido = itemPedido;
 	}
-
-
 
 	public Long getId() {
 		return id;

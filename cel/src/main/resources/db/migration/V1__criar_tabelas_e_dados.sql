@@ -1,6 +1,11 @@
 CREATE TABLE IF NOT EXISTS public.clientes
 (
     id serial PRIMARY KEY,
+    nome varchar(120),
+    telefone varchar(14),
+    cpf varchar(11),
+    data_nascimento date,
+
     email varchar(80),
     nome varchar(120),
     cpf varchar(11),
@@ -13,7 +18,6 @@ CREATE TABLE IF NOT EXISTS public.clientes
     localidade varchar(120),
     logradouro varchar(120),
     uf varchar(2)
-      
 );
 
 CREATE TABLE IF NOT EXISTS public.categorias
