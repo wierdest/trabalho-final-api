@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
+import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
 import br.org.serratec.api.cel.service.PedidoService;
 import jakarta.validation.Valid;
 
@@ -40,6 +41,16 @@ public class PedidoController {
 			return new ResponseEntity<>(pedidoDto.get(), HttpStatus.FOUND);
 		}		
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
+	}
+	
+	@GetMapping("/relatorio-pedido/{id}")
+	public ResponseEntity<RelatorioPedidoDTO> obterRelatorioPedido(@PathVariable Long id) {
+		Optional<PedidoDto> pedidoDto = servico.obterPedidoPorId(id);
+		if(pedidoDto.isPresent()) {
+			RelatorioPedidoDTO relatorio = 
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 	
 

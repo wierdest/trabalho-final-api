@@ -2,9 +2,7 @@ package br.org.serratec.api.cel.dtos;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import br.org.serratec.api.cel.config.Mapper;
 import br.org.serratec.api.cel.model.Cliente;
 import jakarta.validation.constraints.Email;

@@ -67,7 +67,6 @@ public class PedidoService {
 			Double	valorLiquido = valorBruto - valorDesconto;
 			item.setValorLiquido(valorLiquido);
 			
-			
 			itensPedido.add(item);
 			valorTotal += valorLiquido;
 		}
