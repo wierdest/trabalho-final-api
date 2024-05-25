@@ -42,7 +42,7 @@ public class ProdutoService {
         }
 
         // 
-        Optional<Categoria> categoriaOptional = categoriaRepositorio.findByNome(produto.categoria().getNome());
+        Optional<Categoria> categoriaOptional = categoriaRepositorio.findByNomeIgnoreCase(produto.categoria().getNome());
         Categoria categoria;
 
         if (categoriaOptional.isPresent()) {
@@ -55,7 +55,6 @@ public class ProdutoService {
             categoria.setDescricao(produto.categoria().getDescricao());
             categoria = categoriaRepositorio.save(categoria);
         }
-
         // Criar a entidade Produto e associar a categoria
         produtoEntity.setCategoria(categoria);
 
@@ -65,10 +64,31 @@ public class ProdutoService {
 	
 	
 	public Optional<ProdutoDto> atualizar(Long id,ProdutoDto produto){
+		Produto produtoEntity = produto.toEntity();
+		Optional<Categoria> categoriaOptional = categoriaRepositorio.findByNomeIgnoreCase(produto.categoria().getNome());
+        Categoria categoria = produto.toEntity().getCategoria();
+		
 		if(repositorio.existsById(id)) {
-			Produto produtoEntity = produto.toEntity();
-			produtoEntity.setId(id);
+			
+			if (categoriaOptional.isPresent()) {
+	            // Se a categoria existir, usar a categoria existente
+				categoria = categoriaOptional.get();
+				// Atualizar descricao da categoria
+				categoria.setDescricao(produto.categoria().getDescricao());
+				} else {
+	            // Se a categoria não existir, criar uma nova categoria
+	            categoria = new Categoria();
+	            categoria.setNome(produto.categoria().getNome());
+	            categoria.setDescricao(produto.categoria().getDescricao());
+	            categoria = categoriaRepositorio.save(categoria);
+	        }
+	        // Criar a entidade Produto e associar a categoria
+	        produtoEntity.setCategoria(categoria);
+			
+	        produtoEntity.setId(id);
 			repositorio.save(produtoEntity);
+			
+			
 			return Optional.of(ProdutoDto.toDto(produtoEntity));
 		}
 		

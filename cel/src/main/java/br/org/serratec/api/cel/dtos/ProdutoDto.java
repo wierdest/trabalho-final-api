@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.org.serratec.api.cel.config.Mapper;
 import br.org.serratec.api.cel.model.Categoria;
 import br.org.serratec.api.cel.model.Produto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public record ProdutoDto(
 		String imagem,
 
 		@NotNull(message = "A categoria não pode estar em branco.")
+		@Valid
 		Categoria categoria
 		) {
 

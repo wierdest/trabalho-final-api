@@ -8,7 +8,7 @@ import br.org.serratec.api.cel.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 
-    Optional<Categoria> findByNome(String nome);
+    Optional<Categoria> findByNomeIgnoreCase(String nome);
 
 	
 }
