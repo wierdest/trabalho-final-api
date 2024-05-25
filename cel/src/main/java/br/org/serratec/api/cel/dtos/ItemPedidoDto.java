@@ -1,5 +1,8 @@
 package br.org.serratec.api.cel.dtos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.org.serratec.api.cel.config.Mapper;
@@ -36,6 +39,18 @@ public record ItemPedidoDto(
 	  
 	  public static ItemPedidoDto toDto(ItemPedido itemPedido) {
 		  return Mapper.getMapper().convertValue(itemPedido, ItemPedidoDto.class);
+	  }
+	  
+	  public ItemRelatorioDTO toItemRelatorio() {
+		  return new ItemRelatorioDTO(
+				  this.id,
+				  this.produto.nome(),
+				  this.precoVenda,
+				  this.quantidade,
+				  this.valorBruto,
+				  this.percentualDesconto,
+				  this.valorLiquido
+				  );
 	  }
 
 }

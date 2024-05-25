@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.api.cel.dtos.ProdutoDto;
+import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
 import br.org.serratec.api.cel.service.ProdutoService;
 import jakarta.validation.Valid;
 
@@ -39,7 +40,6 @@ public class ProdutoController {
 		}		
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 	}
-	
 	
 	@PostMapping
 	public ResponseEntity<ProdutoDto> cadastrarProduto(@RequestBody @Valid ProdutoDto produto){

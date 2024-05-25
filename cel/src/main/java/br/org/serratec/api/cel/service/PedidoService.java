@@ -44,7 +44,7 @@ public class PedidoService {
 		if (pedidoEntity.isPresent()) {
 			return Optional.of(PedidoDto.toDto(pedidoEntity.get()));
 		}
-		return Optional.empty();
+		throw new IllegalArgumentException("Id Inválida do Pedido!!");
 	}
 	
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {	
@@ -66,7 +66,6 @@ public class PedidoService {
 			Double valorDesconto = valorBruto * (item.getPercentualDesconto() / 100);
 			Double	valorLiquido = valorBruto - valorDesconto;
 			item.setValorLiquido(valorLiquido);
-			
 			
 			itensPedido.add(item);
 			valorTotal += valorLiquido;
