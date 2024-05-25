@@ -16,15 +16,15 @@ import jakarta.validation.constraints.Pattern;
 public record ClienteDTO(
         Long id,
         @NotBlank(message = "Digite o nome completo.")
-        String nome_completo, 
+        String nome, 
         @NotBlank
         @Email(message =  "Informe um e-mail válido com @.")
         String email, 
         @NotBlank
         @Pattern(regexp = "\\d{11}", message = "Digite um CPF válido de 11 dígitos.")
         String cpf, 
-        @NotBlank
-        @Pattern(regexp = "\\d{11}", message = "O telefone não pode estar em branco.")
+       // @NotBlank
+       // @Pattern(regexp = "\\d{11}", message = "O telefone não pode estar em branco.")
         String telefone,
         @NotNull(message = "O endereço não pode estar em branco.")
         ViaCEPDTO endereco,

@@ -53,7 +53,7 @@ public class ClienteController {
         return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
     }
 
-	
+	/*
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> obterPorId(@PathVariable Long id) {
 		Optional<ClienteDTO> dto = servico.obterClientePorId(id);
@@ -62,7 +62,7 @@ public class ClienteController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
+	*/
 	@PostMapping
 	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO cliente) {
 		

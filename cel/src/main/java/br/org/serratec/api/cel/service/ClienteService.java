@@ -14,6 +14,7 @@ import br.org.serratec.api.cel.dtos.ViaCEPDTO;
 import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.model.Endereco;
 import br.org.serratec.api.cel.repository.ClienteRepository;
+import br.org.serratec.exercicioAula04.dto.ClienteDto;
 
 @Service
 public class ClienteService {
@@ -23,6 +24,9 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repositorio;
+	
+	@Autowired
+	EmailService emailService;
 	
 	public Page<ClienteDTO> obterTodos(Pageable pageable) {
         Page<ClienteDTO> clientes = repositorio.findAll(pageable).map(c -> 
@@ -40,7 +44,14 @@ public class ClienteService {
 			conferirCPFEmail(cliente);
 			
 			clienteEntity = criaClienteNovoComEndereco(cliente);
+			
+			emailService.enviarEmailTexto(clienteEntity.getEmail(), 
+					"Novo usuario dacastrado", 
+					"Você está recebendo um email de cadastro");
+			
 			return ClienteDTO.toDto(repositorio.save(clienteEntity));
+			
+			
 			
 		} else {
 			
@@ -119,6 +130,7 @@ public class ClienteService {
 		return Optional.of(dto);
 	}
 	
+	/*
 	public Optional<ClienteDTO> obterClientePorId(Long id) {
 		Optional<Cliente> clienteEntity = repositorio.findById(id);
 		if (clienteEntity.isEmpty()) {
@@ -126,6 +138,15 @@ public class ClienteService {
 		}
 		return Optional.empty();
 	}
+	
+	
+	*/
+	
+	public Cliente obterClientePorId(Long id) {
+		return  repositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+		
+	}
+	
 	
 	
 	public boolean excluirCliente(Long id) {

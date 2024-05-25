@@ -32,6 +32,7 @@ public class ProdutoController {
 		return ResponseEntity.ok(servico.obterTodos());
 	}
 	
+	/*
 	@GetMapping("/{id}")
 	public ResponseEntity<ProdutoDto> obterProdutoPorId(@PathVariable Long id) {
 		Optional<ProdutoDto> produtoDto = servico.obterPorId(id);
@@ -40,7 +41,7 @@ public class ProdutoController {
 		}		
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 	}
-	
+	*/
 	@PostMapping
 	public ResponseEntity<ProdutoDto> cadastrarProduto(@RequestBody @Valid ProdutoDto produto){
 		return new ResponseEntity<ProdutoDto>(servico.cadastrar(produto), HttpStatus.CREATED);
