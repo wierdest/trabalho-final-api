@@ -12,8 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,9 +28,9 @@ public class Produto {
 	private LocalDate dataCadastro;
 	private BigDecimal valorUnitario;
 	private String imagem;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name= "id_categoria", referencedColumnName= "id")
-	private Categoria categoria;
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "produto")
