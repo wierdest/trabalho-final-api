@@ -1,15 +1,12 @@
 package br.org.serratec.api.cel.model;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,10 +20,23 @@ public class Cliente {
 	private String cpf;
 	private String telefone;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "endereco_id")
+	@Embedded
 	private Endereco endereco;
 	
+	protected Cliente() {}
+	
+	public Cliente(Long id, String nome_completo, String email, String cpf, String telefone, Endereco endereco,
+			LocalDate dataNascimento) {
+		super();
+		this.id = id;
+		this.nome_completo = nome_completo;
+		this.email = email;
+		this.cpf = cpf;
+		this.telefone = telefone;
+		this.endereco = endereco;
+		this.dataNascimento = dataNascimento;
+	}
+
 	private LocalDate dataNascimento;
 	
 	public Long getId() {

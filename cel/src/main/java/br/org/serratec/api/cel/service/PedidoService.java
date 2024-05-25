@@ -47,7 +47,6 @@ public class PedidoService {
 		return Optional.empty();
 	}
 	
-
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {	
 		
 		ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
@@ -85,11 +84,11 @@ public class PedidoService {
 
 	public Optional<PedidoDto> atualizarPedido(Long id, PedidoDto pedido) {
 		if (pedidoRepositorio.existsById(id)) {
+			
+			Optional<Pedido> pedidoNoRepo = pedidoRepositorio.findById(id);			
 
-						
-			Optional<Pedido> pedidoNoRepo = pedidoRepositorio.findById(id);
-					
 			Pedido pedidoEntity = pedidoNoRepo.get();
+			
 			ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(
 					ClienteDTO.toDto(pedidoEntity.getCliente())
 					);			
@@ -99,10 +98,11 @@ public class PedidoService {
 			
 			pedidoRepositorio.save(pedidoEntity);
 			return Optional.of(PedidoDto.toDto(pedidoEntity));
-		} 
+		}
+		throw new IllegalArgumentException("Id Inválida do Pedido!!");
+} 
 			
-		throw new IllegalArgumentException("Id Inválido do Pedido!!");
-	}
+	
 
 	public boolean deletarPedido(Long id) {
 		Optional<Pedido> pedido = pedidoRepositorio.findById(id);

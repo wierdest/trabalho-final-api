@@ -27,44 +27,11 @@ public class ClienteService {
 		return repositorio.findAll().stream().map(cliente -> ClienteDTO.toDto(cliente)).toList();
 	}
 	
-	private Cliente criaClienteNovoComEndereco(ClienteDTO cliente) {
-		ViaCEPDTO enderecoACadastrar;
-		Cliente clienteEntity;
-		// cadastra um novo cliente
-		clienteEntity = cliente.toEntity();
-		enderecoACadastrar = cliente.endereco();
-		 if(enderecoACadastrar == null || enderecoACadastrar.cep() == "") {
-            System.out.println("Endereço nulo ou sem CEP!");
-			throw new IllegalArgumentException("Cliente sem CEP! Não é possível cadastrar um cliente sem CEP!");
-		 } 
-		 else {
-        	// obtem o endereço do cliente novo
-    		Optional<ViaCEPDTO> enderecoObtido = obterEndereco(enderecoACadastrar.cep());
-	        if(enderecoObtido.isPresent()) {
-	            System.out.println("Encontrou endereço!");
-	            Endereco endereco = enderecoObtido.get().toEntity();
-	            clienteEntity.setEndereco(endereco);
-	        }
-		 }
-		 
-         return clienteEntity;
-	}
-
 	public ClienteDTO cadastraOuAcessaCliente(ClienteDTO cliente) {
-		
 		Cliente clienteEntity = cliente.toEntity();
-		
 		if(cliente.id() == null) {
 			
-			Optional<Cliente> clientePorCPF = repositorio.findByCpf(cliente.cpf());
-			if(clientePorCPF.isPresent()) {
-				throw new IllegalArgumentException("CPF já cadastrado! Impossível cadastrar cliente!");
-			}
-			
-			Optional<Cliente> clientePorEmail= repositorio.findByEmail(cliente.email());
-			if(clientePorEmail.isPresent()) {
-				throw new IllegalArgumentException("EMAIL já cadastrado! Impossível cadastrar cliente!");
-			}
+			conferirCPFEmail(cliente);
 			
 			clienteEntity = criaClienteNovoComEndereco(cliente);
 			return ClienteDTO.toDto(repositorio.save(clienteEntity));
@@ -80,7 +47,60 @@ public class ClienteService {
 		}
     }
 	
-	public Optional<ViaCEPDTO> obterEndereco(String cep) {
+	public Optional<ClienteDTO> atualizarCliente(Long id, ClienteDTO cliente) {
+		Optional<Cliente> clienteNoRepositorio = repositorio.findById(id);
+		Cliente novoCliente = cliente.toEntity();
+
+		if(clienteNoRepositorio.isPresent()) {
+			
+			Cliente clienteVelho = clienteNoRepositorio.get();
+			if(clienteVelho.getEndereco().getCep() != cliente.endereco().cep()) {
+				Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.endereco().cep());
+				if(enderecoDTO.isPresent()) {
+					Endereco enderecoEntity = enderecoDTO.get().toEntity();
+					novoCliente.setEndereco(enderecoEntity);
+				}
+			}
+			novoCliente.setId(clienteVelho.getId());
+			repositorio.save(novoCliente);
+			return Optional.of(ClienteDTO.toDto(novoCliente));
+			
+		}
+		throw new IllegalArgumentException("Id do cliente é inválida!!");
+	}
+
+	private Cliente criaClienteNovoComEndereco(ClienteDTO cliente) {
+		 Cliente clienteEntity;
+		 clienteEntity = cliente.toEntity();
+		 ViaCEPDTO enderecoACadastrar = cliente.endereco();
+		 if(enderecoACadastrar == null || enderecoACadastrar.cep() == "") {
+		    System.out.println("Endereço nulo ou sem CEP!");
+			throw new IllegalArgumentException("Cliente sem CEP! Não é possível cadastrar um cliente sem CEP!");
+		 } 
+		 else {
+			Optional<ViaCEPDTO> enderecoObtido = obterEndereco(enderecoACadastrar.cep());
+		    if(enderecoObtido.isPresent()) {
+		        Endereco endereco = enderecoObtido.get().toEntity();
+		        clienteEntity.setEndereco(endereco);
+		    }
+		 }
+		 
+		 return clienteEntity;
+	}
+	
+	private void conferirCPFEmail(ClienteDTO cliente) {
+		Optional<Cliente> clientePorCPF = repositorio.findByCpf(cliente.cpf());
+		if(clientePorCPF.isPresent()) {
+			throw new IllegalArgumentException("CPF já cadastrado! Impossível cadastrar cliente!");
+		}
+		
+		Optional<Cliente> clientePorEmail= repositorio.findByEmail(cliente.email());
+		if(clientePorEmail.isPresent()) {
+			throw new IllegalArgumentException("EMAIL já cadastrado! Impossível cadastrar cliente!");
+		}
+	}
+
+	private Optional<ViaCEPDTO> obterEndereco(String cep) {
 		var json = ViaCEPService.obterDados(cep);
 		ViaCEPDTO dto = conversorJSON.converter(json, ViaCEPDTO.class);
 		if(dto == null) {
@@ -101,31 +121,6 @@ public class ClienteService {
 		return Optional.empty();
 	}
 	
-	public Optional<ClienteDTO> atualizarCliente(Long id, ClienteDTO cliente) {
-		
-		Optional<Cliente> clienteNoRepositorio = repositorio.findById(id);
-		Cliente novoCliente = cliente.toEntity();
-
-		if(clienteNoRepositorio.isPresent()) {
-			Cliente clienteVelho = clienteNoRepositorio.get();
-			if(clienteVelho.getEndereco().getCep() != cliente.endereco().cep()) {
-				// cliente com o cep diferente, precisa atualizar o endereço
-				// obtem novo endereço
-				// validar o cep, claro, quando fizermos a parte de validação
-				Optional<ViaCEPDTO> enderecoDTO = obterEndereco(cliente.endereco().cep());
-				// fazer = olhar os requisitos de validação do endereço
-				if(enderecoDTO.isPresent()) {
-					Endereco enderecoEntity = enderecoDTO.get().toEntity();
-					novoCliente.setEndereco(enderecoEntity);
-				}
-			}
-			novoCliente.setId(id);
-			repositorio.save(novoCliente);
-			return Optional.of(ClienteDTO.toDto(novoCliente));
-			
-		}
-		return Optional.empty();
-	}
 	
 	public boolean excluirCliente(Long id) {
 		Optional<Cliente> cliente = repositorio.findById(id);
