@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.api.cel.dtos.ProdutoDto;
+import br.org.serratec.api.cel.model.Categoria;
 import br.org.serratec.api.cel.model.Produto;
+import br.org.serratec.api.cel.repository.CategoriaRepository;
 import br.org.serratec.api.cel.repository.ProdutoRepository;
 
 @Service
@@ -15,6 +17,9 @@ public class ProdutoService {
 	
 	@Autowired
 	ProdutoRepository repositorio;
+	
+	@Autowired
+    private CategoriaRepository categoriaRepositorio;
 	
 	public List<ProdutoDto> obterTodos() {
 		return repositorio.findAll()
@@ -33,9 +38,28 @@ public class ProdutoService {
 		Produto produtoEntity = produto.toEntity();	
 
         if (repositorio.existsByDescricao(produto.descricao())) {
-            throw new RuntimeException("Já existe um produto com essa descrição");
+            throw new IllegalArgumentException("Já existe um produto com essa descrição");
         }
-		
+
+        // 
+        Optional<Categoria> categoriaOptional = categoriaRepositorio.findByNome(produto.categoria().getNome());
+        Categoria categoria;
+
+        if (categoriaOptional.isPresent()) {
+            // Se a categoria existir, usar a categoria existente
+            categoria = categoriaOptional.get();
+        } else {
+            // Se a categoria não existir, criar uma nova categoria
+            categoria = new Categoria();
+            categoria.setNome(produto.categoria().getNome());
+            categoria.setDescricao(produto.categoria().getDescricao());
+            categoria = categoriaRepositorio.save(categoria);
+        }
+
+        // Criar a entidade Produto e associar a categoria
+        produtoEntity.setCategoria(categoria);
+
+
 		return ProdutoDto.toDto(repositorio.save(produtoEntity));
 	}
 	
