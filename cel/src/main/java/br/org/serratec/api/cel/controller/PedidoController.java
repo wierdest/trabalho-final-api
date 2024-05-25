@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 
 
@@ -48,7 +49,7 @@ public class PedidoController {
 		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
 	}
 	
-
+	@PutMapping("/{id}")
 	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){
 
 		Optional<PedidoDto> pedidoDto = servico.atualizarPedido(id, pedido);
@@ -61,6 +62,26 @@ public class PedidoController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletarPedido(@PathVariable Long id){
 		if(!servico.deletarPedido(id)) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	//---------------ControllerItemPedido-----------------------
+	@PutMapping("/item-pedido/{id}")
+	public ResponseEntity<ItemPedidoDto> atualizarItemPedido(@PathVariable Long id, @RequestBody @Valid ItemPedidoDto itemPedido){
+
+		Optional<ItemPedidoDto> ItemPedidoDto = servico.atualizarItemPedido(id, itemPedido);
+		if(ItemPedidoDto.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(ItemPedidoDto.get());
+	}
+	
+	@DeleteMapping("/item-pedido/{id}")
+	public ResponseEntity<Void> deletarItemPedido(@PathVariable Long id){
+		if(!servico.deletarItemPedido(id)) {
 			return ResponseEntity.notFound().build();
 		}
 		
