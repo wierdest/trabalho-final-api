@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import br.org.serratec.api.cel.dtos.ClienteDTO;
 import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
+import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
+import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.model.ItemPedido;
 import br.org.serratec.api.cel.model.Pedido;
-import br.org.serratec.api.cel.repository.ClienteRepository;
+import br.org.serratec.api.cel.model.Produto;
 import br.org.serratec.api.cel.repository.ItemPedidoRepository;
 import br.org.serratec.api.cel.repository.PedidoRepository;
 import jakarta.validation.Valid;
@@ -24,17 +26,17 @@ public class PedidoService {
 	ConverteJSON conversorJSON;
 
 	@Autowired
-	PedidoRepository pedidoRepositorio;
-
-	@Autowired
-	ClienteRepository clienteRepositorio;
-
-	@Autowired
 	ClienteService clienteService;
 	
 	@Autowired
+	ProdutoService produtoService;
+	
+	@Autowired
+	PedidoRepository pedidoRepositorio;
+	
+	@Autowired
 	ItemPedidoRepository itemRepositorio;
-
+	
 	public List<PedidoDto> obterTodos() {
 		return pedidoRepositorio.findAll().stream().map(PedidoDto::toDto).toList();
 	}
@@ -47,19 +49,33 @@ public class PedidoService {
 		throw new IllegalArgumentException("Id Inválida do Pedido!!");
 	}
 	
+	public RelatorioPedidoDTO cadastrarPedidoERetornarRelatorio(PedidoDto pedido) {
+		
+		PedidoDto pedidoDto = cadastrarPedido(pedido);
+		
+		return pedidoDto.toRelatorio();
+		
+	}
+	
+	
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {	
 		
-		ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
+//		ClienteDTO cliente = clienteService.cadastraOuAcessaCliente(pedido.cliente());
+		
+		Cliente cliente = clienteService.obterClientePorId(pedido.cliente().id());
 		
 		Pedido pedidoACadastrar = pedido.toEntity();
-		pedidoACadastrar.setCliente(cliente.toEntity());
+		pedidoACadastrar.setCliente(cliente);
 
 		List<ItemPedido> itensPedido = new ArrayList<>();
 		Double valorTotal = 0.0;
 		
 		for (ItemPedidoDto i : pedido.itensPedido()) {
-
+			
+			Produto produto = produtoService.buscarProdutoPorId(i.produto().id());
 			ItemPedido item = i.toEntity();
+			item.setProduto(produto);
+			
 			item.setPedido(pedidoACadastrar);		
 			Double valorBruto = item.getPrecoVenda() * item.getQuantidade();
 			item.setValorBruto(valorBruto);			
@@ -82,6 +98,7 @@ public class PedidoService {
 	}
 
 	public Optional<PedidoDto> atualizarPedido(Long id, PedidoDto pedido) {
+		
 		if (pedidoRepositorio.existsById(id)) {
 			
 			Optional<Pedido> pedidoNoRepo = pedidoRepositorio.findById(id);			

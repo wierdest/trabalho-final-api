@@ -22,8 +22,7 @@ public class ProdutoService {
     private CategoriaRepository categoriaRepositorio;
 	
 	public List<ProdutoDto> obterTodos() {
-		return repositorio.findAll()
-				.stream().map(p -> ProdutoDto.toDto(p)).toList();
+		return repositorio.findAll().stream().map(p -> ProdutoDto.toDto(p)).toList();
 	}
 	
 	public Optional<ProdutoDto> obterPorId(Long id){
@@ -33,6 +32,12 @@ public class ProdutoService {
 		}
 		return Optional.empty();
 	}
+	
+	public Produto buscarProdutoPorId(Long id) {
+        return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+    }
+	
+	
 	
 	public ProdutoDto cadastrar(ProdutoDto produto) {
 		Produto produtoEntity = produto.toEntity();	

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
@@ -56,9 +55,14 @@ public class PedidoController {
 		return ResponseEntity.notFound().build();
 	}
 	
+//	@PostMapping
+//	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
+//		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
+//	}
+	
 	@PostMapping
-	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
-		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
+	public ResponseEntity<RelatorioPedidoDTO> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
+		return new ResponseEntity<RelatorioPedidoDTO>(servico.cadastrarPedidoERetornarRelatorio(pedido), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
