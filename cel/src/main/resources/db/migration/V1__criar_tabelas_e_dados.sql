@@ -1,18 +1,19 @@
 CREATE TABLE IF NOT EXISTS public.clientes
 (
     id serial PRIMARY KEY,
-    cpf varchar(11),
-    data_nascimento date,
     email varchar(80),
+    nome varchar(120),
+    cpf varchar(11),
+    telefone varchar(14),
+    data_nascimento date,   
     bairro varchar(120),
     cep varchar(8),
     complemento varchar(120),
     ddd varchar(2),
     localidade varchar(120),
     logradouro varchar(120),
-    uf varchar(2),
-    nome_completo varchar(120),
-    telefone varchar(14)
+    uf varchar(2)
+      
 );
 
 CREATE TABLE IF NOT EXISTS public.categorias
@@ -89,7 +90,7 @@ VALUES
 
 
 
-INSERT INTO public.clientes (cpf, data_nascimento, email, bairro, cep, complemento, ddd, localidade, logradouro, uf, nome_completo, telefone)
+INSERT INTO public.clientes (cpf, data_nascimento, email, bairro, cep, complemento, ddd, localidade, logradouro, uf, nome, telefone)
 VALUES
 ('12345678901', '1990-01-15', 'cliente1@example.com', 'Centro', '12345678', 'Apartamento 101', '11', 'São Paulo', 'Rua A', 'SP', 'Fulano da Silva', '11223344'),
 ('98765432109', '1985-05-20', 'cliente2@example.com', 'Jardim', '87654321', 'Casa 202', '11', 'Rio de Janeiro', 'Rua B', 'RJ', 'Ciclano Santos', '55443322'),

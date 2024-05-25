@@ -2,12 +2,18 @@ package br.org.serratec.api.cel.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.service.PedidoService;
+
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -33,12 +39,21 @@ public class ClienteController {
 
 	@Autowired
 	private ClienteService servico;
-	
+	/*
 	@GetMapping
-	public ResponseEntity<List<ClienteDTO>> obterTodos() {
+	public ResponseEntity<Page<ClienteDTO>> obterTodos() {
 		return new ResponseEntity<>(servico.obterTodos(), HttpStatus.OK);
 	}
+	*/
+	
+	@GetMapping
+    public ResponseEntity<Page<ClienteDTO>> obterTodos(
+            @PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) Pageable pageable
+            ) {
+        return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
+    }
 
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> obterPorId(@PathVariable Long id) {
 		Optional<ClienteDTO> dto = servico.obterClientePorId(id);

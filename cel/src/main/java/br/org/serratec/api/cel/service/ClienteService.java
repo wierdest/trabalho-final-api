@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.api.cel.dtos.ClienteDTO;
@@ -22,10 +24,14 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repositorio;
 	
-	public List<ClienteDTO> obterTodos() {
-		
-		return repositorio.findAll().stream().map(cliente -> ClienteDTO.toDto(cliente)).toList();
-	}
+	public Page<ClienteDTO> obterTodos(Pageable pageable) {
+        Page<ClienteDTO> clientes = repositorio.findAll(pageable).map(c -> 
+            ClienteDTO.toDto(c)
+        );
+        return clientes;
+    }
+	
+	
 	
 	public ClienteDTO cadastraOuAcessaCliente(ClienteDTO cliente) {
 		Cliente clienteEntity = cliente.toEntity();

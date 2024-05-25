@@ -10,12 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "clientes")
 public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome_completo;
+	private String nome;
 	private String email;
 	private String cpf;
 	private String telefone;
@@ -25,11 +25,11 @@ public class Cliente {
 	
 	protected Cliente() {}
 	
-	public Cliente(Long id, String nome_completo, String email, String cpf, String telefone, Endereco endereco,
+	public Cliente(Long id, String nome, String email, String cpf, String telefone, Endereco endereco,
 			LocalDate dataNascimento) {
 		super();
 		this.id = id;
-		this.nome_completo = nome_completo;
+		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.telefone = telefone;
@@ -45,12 +45,17 @@ public class Cliente {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getNome_completo() {
-		return nome_completo;
+	
+	
+
+	public String getNome() {
+		return nome;
 	}
-	public void setNome_completo(String nome_completo) {
-		this.nome_completo = nome_completo;
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
+
 	public String getEmail() {
 		return email;
 	}
