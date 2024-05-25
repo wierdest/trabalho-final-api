@@ -31,8 +31,12 @@ public class ProdutoService {
 	
 	public ProdutoDto cadastrar(ProdutoDto produto) {
 		Produto produtoEntity = produto.toEntity();	
-		repositorio.save(produtoEntity);
-		return ProdutoDto.toDto(produtoEntity);
+
+        if (repositorio.existsByDescricao(produto.descricao())) {
+            throw new RuntimeException("Já existe um produto com essa descrição");
+        }
+		
+		return ProdutoDto.toDto(repositorio.save(produtoEntity));
 	}
 	
 	

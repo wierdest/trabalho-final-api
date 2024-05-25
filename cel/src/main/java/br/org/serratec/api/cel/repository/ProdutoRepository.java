@@ -6,4 +6,6 @@ import br.org.serratec.api.cel.model.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
+    boolean existsByDescricao(String descricao);
+
 }
