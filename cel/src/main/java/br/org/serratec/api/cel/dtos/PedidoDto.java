@@ -53,8 +53,7 @@ public record PedidoDto(
 				this.dataPedido,
 				this.valorTotal,
 				itensRelatorio
-				);
-				
+				);	
 	}
 
 }
