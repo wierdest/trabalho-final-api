@@ -42,7 +42,7 @@ public class PedidoController {
 	
 
 	@PostMapping
-	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody PedidoDto pedido){
+	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
 		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
 	}
 	
