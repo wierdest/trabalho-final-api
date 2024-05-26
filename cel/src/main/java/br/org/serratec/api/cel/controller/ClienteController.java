@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 import br.org.serratec.api.cel.dtos.ClienteDTO;
 import br.org.serratec.api.cel.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +32,6 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteService servico;
-	
 	
 	@GetMapping
 

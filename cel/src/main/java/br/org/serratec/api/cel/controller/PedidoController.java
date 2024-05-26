@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< HEAD
-=======
-import br.org.serratec.api.cel.dtos.ClienteDTO;
->>>>>>> refs/remotes/origin/main
 import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
@@ -40,7 +36,6 @@ public class PedidoController {
 			@PageableDefault(size=2, page=0, sort="id", direction=Sort.Direction.ASC) Pageable pageable) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
-	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PedidoDto> obterPedidoPorId(@PathVariable Long id) {
