@@ -5,12 +5,7 @@ CREATE TABLE IF NOT EXISTS public.clientes
     telefone varchar(14),
     cpf varchar(11),
     data_nascimento date,
-
-    email varchar(80),
-    nome varchar(120),
-    cpf varchar(11),
-    telefone varchar(14),
-    data_nascimento date,   
+    email varchar(80),  
     bairro varchar(120),
     cep varchar(8),
     complemento varchar(120),
@@ -19,7 +14,7 @@ CREATE TABLE IF NOT EXISTS public.clientes
     logradouro varchar(120),
     uf varchar(2)
 
-  
+
 );
 
 CREATE TABLE IF NOT EXISTS public.categorias
