@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.org.serratec.api.cel.model.Cliente;
+import br.org.serratec.api.cel.service.PedidoService;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +38,13 @@ public class ClienteController {
 	private ClienteService servico;
 	
 	@GetMapping
-	public ResponseEntity<Page<ClienteDTO>> obterTodos(
-			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) Pageable pageable
-			) {
-		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
-	}
+    public ResponseEntity<Page<ClienteDTO>> obterTodos(
+            @PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) Pageable pageable
+            ) {
+        return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
+    }
 
+	/*
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> obterPorId(@PathVariable Long id) {
 		Optional<ClienteDTO> dto = servico.obterClientePorId(id);
@@ -47,11 +53,10 @@ public class ClienteController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
+	*/
 	@PostMapping
 	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO cliente) {
-		
-		
+	
 		return new ResponseEntity<>(servico.cadastraOuAcessaCliente(cliente), HttpStatus.CREATED);
 	}
 	
