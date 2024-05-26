@@ -23,13 +23,17 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repositorio;
 	
+	@Autowired
+	EmailService emailService;
+	
 	public Page<ClienteDTO> obterTodos(Pageable pageable) {
+
 		Page<ClienteDTO> clientes = repositorio.findAll(pageable).map(c -> 
 			ClienteDTO.toDto(c)
 		);
 		return clientes;
 	}
-	
+
 	public ClienteDTO cadastraOuAcessaCliente(ClienteDTO cliente) {
 		Cliente clienteEntity = cliente.toEntity();
 		if(cliente.id() == null) {
@@ -37,7 +41,14 @@ public class ClienteService {
 			conferirCPFEmail(cliente);
 			
 			clienteEntity = criaClienteNovoComEndereco(cliente);
+			
+			emailService.enviarEmailTexto(clienteEntity.getEmail(), 
+					"Novo usuario dacastrado", 
+					"Você está recebendo um email de cadastro");
+			
 			return ClienteDTO.toDto(repositorio.save(clienteEntity));
+			
+			
 			
 		} else {
 			
@@ -116,6 +127,7 @@ public class ClienteService {
 		return Optional.of(dto);
 	}
 	
+	
 	public Optional<ClienteDTO> obterClientePorId(Long id) {
 		Optional<Cliente> clienteEntity = repositorio.findById(id);
 		if (clienteEntity.isEmpty()) {
@@ -128,7 +140,6 @@ public class ClienteService {
         return  repositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
     }
-	
 	
 	public boolean excluirCliente(Long id) {
 		Optional<Cliente> cliente = repositorio.findById(id);

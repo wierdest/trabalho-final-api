@@ -1,5 +1,4 @@
-package br.org.serratec.api.cel.dtos;
-
+ package br.org.serratec.api.cel.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

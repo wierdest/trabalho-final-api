@@ -49,25 +49,26 @@ public class PedidoController {
 	@GetMapping("/relatorio-pedido/{id}")
 	public ResponseEntity<RelatorioPedidoDTO> obterRelatorioPedido(@PathVariable Long id) {
 		Optional<PedidoDto> pedidoDtoOptional= servico.obterPedidoPorId(id);
-		if(pedidoDtoOptional.isPresent()) {
+		if(pedidoDtoOptional.isPresent()) {	
 			
 			PedidoDto pedidoDto = pedidoDtoOptional.get();
-				
-			
+							
 			return ResponseEntity.ok(pedidoDto.toRelatorio());
 		}
 		return ResponseEntity.notFound().build();
 	}
+
 	
 //	@PostMapping
 //	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
 //		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
 //	}
-	
+
+
 	@PostMapping
-	public ResponseEntity<RelatorioPedidoDTO> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
-		return new ResponseEntity<RelatorioPedidoDTO>(servico.cadastrarPedidoERetornarRelatorio(pedido), HttpStatus.CREATED);
-	}
+    public ResponseEntity<RelatorioPedidoDTO> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
+        return new ResponseEntity<RelatorioPedidoDTO>(servico.cadastrarPedidoERetornarRelatorio(pedido), HttpStatus.CREATED);
+    }
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido){

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -34,13 +35,13 @@ public class ClienteController {
 	private ClienteService servico;
 	
 	@GetMapping
-
 	@Operation(description="Endpoint para CONSULTAR todos os clientes do database!")
 	public ResponseEntity<Page<ClienteDTO>> obterTodos(
 			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) Pageable pageable
 			) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
+
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> obterPorId(@PathVariable Long id) {
@@ -50,13 +51,12 @@ public class ClienteController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	
 	@Operation(description="Endpoint para CADASTRAR um cliente no database!")
 	@PostMapping
 	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO cliente) {
-		
-		
+	
 		return new ResponseEntity<>(servico.cadastraOuAcessaCliente(cliente), HttpStatus.CREATED);
 	}
 	

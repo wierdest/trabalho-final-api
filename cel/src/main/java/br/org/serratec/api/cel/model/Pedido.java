@@ -54,8 +54,6 @@ public class Pedido {
 		this.itensPedido = itemPedido;
 	}
 
-
-
 	public Long getId() {
 		return id;
 	}

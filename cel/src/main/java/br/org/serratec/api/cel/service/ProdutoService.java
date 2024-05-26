@@ -35,6 +35,7 @@ public class ProdutoService {
 		return produtos;
 	}
 	
+
 	public Optional<ProdutoDto> obterPorId(Long id){
 		Optional<Produto> produtoEntity = repositorio.findById(id);
 		if(produtoEntity.isPresent()) {
@@ -42,8 +43,8 @@ public class ProdutoService {
 		}
 		return Optional.empty();
 	}
-	
-	public Produto buscarProdutoPorId(Long id) {
+
+	public Produto buscarProdutoPorIdPedido(Long id) {
         return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 	
