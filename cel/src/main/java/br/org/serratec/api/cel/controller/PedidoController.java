@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.org.serratec.api.cel.dtos.ClienteDTO;
 import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
@@ -37,7 +36,6 @@ public class PedidoController {
 			@PageableDefault(size=2, page=0, sort="id", direction=Sort.Direction.ASC) Pageable pageable) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
-	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PedidoDto> obterPedidoPorId(@PathVariable Long id) {
@@ -59,13 +57,14 @@ public class PedidoController {
 		}
 		return ResponseEntity.notFound().build();
 	}
-	/*
-	@PostMapping
-	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
-		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
-	}
-	*/
+
 	
+//	@PostMapping
+//	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
+//		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
+//	}
+
+
 	@PostMapping
     public ResponseEntity<RelatorioPedidoDTO> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
         return new ResponseEntity<RelatorioPedidoDTO>(servico.cadastrarPedidoERetornarRelatorio(pedido), HttpStatus.CREATED);

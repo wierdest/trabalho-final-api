@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="clientes")
+@Table(name = "clientes")
 public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Cliente {
 	private Endereco endereco;
 	
 	protected Cliente() {}
-	
+
 
 	private LocalDate dataNascimento;
 	

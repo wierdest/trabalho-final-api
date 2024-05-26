@@ -17,7 +17,7 @@ import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.model.ItemPedido;
 import br.org.serratec.api.cel.model.Pedido;
 import br.org.serratec.api.cel.model.Produto;
-import br.org.serratec.api.cel.repository.ClienteRepository;
+
 import br.org.serratec.api.cel.repository.ItemPedidoRepository;
 import br.org.serratec.api.cel.repository.PedidoRepository;
 import jakarta.validation.Valid;
@@ -28,21 +28,18 @@ public class PedidoService {
 	@Autowired
 	ConverteJSON conversorJSON;
 
-	@Autowired
-	PedidoRepository pedidoRepositorio;
-
-	@Autowired
-	ClienteRepository clienteRepositorio;
 
 	@Autowired
 	ProdutoService produtoService;
 
 	@Autowired
 	ClienteService clienteService;
-
+	
+	@Autowired
+	PedidoRepository pedidoRepositorio;
+	
 	@Autowired
 	ItemPedidoRepository itemRepositorio;
-
 
 	@Autowired
 	EmailService emailService;
@@ -61,10 +58,10 @@ public class PedidoService {
 		}
 		throw new IllegalArgumentException("Id Inválida do Pedido!!");
 	}
-
+	
 	public PedidoDto cadastrarPedido(PedidoDto pedido) {
 
-		Cliente cliente = clienteService.obterClientePorId(pedido.cliente().id());
+		Cliente cliente = clienteService.obterClientePorIdPedido(pedido.cliente().id());
 
 		Pedido pedidoACadastrar = pedido.toEntity();
 		pedidoACadastrar.setCliente(cliente);
@@ -74,9 +71,13 @@ public class PedidoService {
 
 		for (ItemPedidoDto i : pedido.itensPedido()) {
 
-			Produto produto = produtoService.buscarProdutoPorId(i.produto().id());
+			
+			Produto produto = produtoService.buscarProdutoPorIdPedido(i.produto().id());
+
 
 			ItemPedido item = i.toEntity();
+	
+
 			item.setPedido(pedidoACadastrar);
 			item.setProduto(produto);
 
@@ -111,6 +112,7 @@ public class PedidoService {
 	}
 
 	public Optional<PedidoDto> atualizarPedido(Long id, PedidoDto pedido) {
+		
 		if (pedidoRepositorio.existsById(id)) {
 
 			Optional<Pedido> pedidoNoRepo = pedidoRepositorio.findById(id);

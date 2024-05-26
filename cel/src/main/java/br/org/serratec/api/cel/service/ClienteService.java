@@ -1,7 +1,6 @@
 package br.org.serratec.api.cel.service;
 
 
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import br.org.serratec.api.cel.dtos.ViaCEPDTO;
 import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.model.Endereco;
 import br.org.serratec.api.cel.repository.ClienteRepository;
-import br.org.serratec.exercicioAula04.dto.ClienteDto;
 
 @Service
 public class ClienteService {
@@ -29,13 +27,13 @@ public class ClienteService {
 	EmailService emailService;
 	
 	public Page<ClienteDTO> obterTodos(Pageable pageable) {
-        Page<ClienteDTO> clientes = repositorio.findAll(pageable).map(c -> 
-            ClienteDTO.toDto(c)
-        );
-        return clientes;
-    }
-	
-	
+
+		Page<ClienteDTO> clientes = repositorio.findAll(pageable).map(c -> 
+			ClienteDTO.toDto(c)
+		);
+		return clientes;
+	}
+
 	public ClienteDTO cadastraOuAcessaCliente(ClienteDTO cliente) {
 		Cliente clienteEntity = cliente.toEntity();
 		if(cliente.id() == null) {
@@ -129,7 +127,7 @@ public class ClienteService {
 		return Optional.of(dto);
 	}
 	
-	/*
+	
 	public Optional<ClienteDTO> obterClientePorId(Long id) {
 		Optional<Cliente> clienteEntity = repositorio.findById(id);
 		if (clienteEntity.isEmpty()) {
@@ -138,15 +136,10 @@ public class ClienteService {
 		return Optional.empty();
 	}
 	
-	
-	*/
-	
-	public Cliente obterClientePorId(Long id) {
-		return  repositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
-		
-	}
-	
-	
+	public Cliente obterClientePorIdPedido(Long id) {
+        return  repositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
+    }
 	
 	public boolean excluirCliente(Long id) {
 		Optional<Cliente> cliente = repositorio.findById(id);
