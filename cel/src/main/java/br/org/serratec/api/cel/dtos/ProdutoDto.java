@@ -34,7 +34,7 @@ public record ProdutoDto(
 	    @NotBlank(message = "A URL da imagem não pode estar vazia")
 		String imagem,
 
-		@NotNull(message = "A categoria não pode estar em branco.")
+		// @NotNull(message = "A categoria não pode estar em branco.")
 		@Valid
 		Categoria categoria
 		) {

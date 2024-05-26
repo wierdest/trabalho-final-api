@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS public.clientes
     data_nascimento date,
     email varchar(80),  
     bairro varchar(120),
-    cep varchar(8),
+    cep varchar(9),
     complemento varchar(120),
     ddd varchar(2),
     localidade varchar(120),

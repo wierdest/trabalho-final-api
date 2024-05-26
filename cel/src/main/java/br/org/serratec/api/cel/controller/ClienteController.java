@@ -2,6 +2,7 @@ package br.org.serratec.api.cel.controller;
 
 
 
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +24,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import br.org.serratec.api.cel.dtos.ClienteDTO;
+import br.org.serratec.api.cel.model.Cliente;
 import br.org.serratec.api.cel.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
@@ -37,11 +42,13 @@ public class ClienteController {
 	@GetMapping
 	@Operation(description="Endpoint para CONSULTAR todos os clientes do database!")
 	public ResponseEntity<Page<ClienteDTO>> obterTodos(
-			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) Pageable pageable
+			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC)
+			// esconde a opção no swagger
+			@Parameter(hidden=true)
+			Pageable pageable
 			) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
-
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> obterPorId(@PathVariable Long id) {

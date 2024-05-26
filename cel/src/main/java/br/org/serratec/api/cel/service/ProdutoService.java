@@ -49,6 +49,7 @@ public class ProdutoService {
     }
 	
 	public ProdutoDto cadastrar(ProdutoDto produto) {
+		
 		Produto produtoEntity = produto.toEntity();	
 
         if (repositorio.existsByDescricao(produto.descricao())) {
@@ -77,36 +78,22 @@ public class ProdutoService {
 	
 	
 	public Optional<ProdutoDto> atualizar(Long id,ProdutoDto produto){
-		Produto produtoEntity = produto.toEntity();
-		Optional<Categoria> categoriaOptional = categoriaRepositorio.findByNomeIgnoreCase(produto.categoria().getNome());
-        Categoria categoria = produto.toEntity().getCategoria();
-		
-		if(repositorio.existsById(id)) {
-			
-			if (categoriaOptional.isPresent()) {
-	            // Se a categoria existir, usar a categoria existente
-				categoria = categoriaOptional.get();
-				// Atualizar descricao da categoria
-				categoria.setDescricao(produto.categoria().getDescricao());
-				} else {
-	            // Se a categoria não existir, criar uma nova categoria
-	            categoria = new Categoria();
-	            categoria.setNome(produto.categoria().getNome());
-	            categoria.setDescricao(produto.categoria().getDescricao());
-	            categoria = categoriaRepositorio.save(categoria);
-	        }
-	        // Criar a entidade Produto e associar a categoria
-	        produtoEntity.setCategoria(categoria);
-			
-	        produtoEntity.setId(id);
-			repositorio.save(produtoEntity);
-			
-			
-			return Optional.of(ProdutoDto.toDto(produtoEntity));
-		}
-		
-		return Optional.empty();
-	}
+
+        Optional<Produto> produtoNoRepositorio = repositorio.findById(id);
+
+        if(produtoNoRepositorio.isPresent()) {
+
+            Categoria categoria = categoriaRepositorio.findById(id).orElseThrow();
+            Produto produtoEntity = produto.toEntity();
+            produtoEntity.setId(id);
+            produtoEntity.setCategoria(categoria);
+            repositorio.save(produtoEntity);
+
+            return Optional.of(ProdutoDto.toDto(produtoEntity));
+        }
+
+        throw new IllegalArgumentException("Id do produto é inválida!!");
+    }
 	
 	public boolean deletar(Long id) {
 		Optional<Produto> produto = repositorio.findById(id);

@@ -13,8 +13,7 @@ public class EmailService {
 	
 	@Value("${spring.mail.username}")
 	private String remetente;
-	
-	
+
 	
 	public String enviarEmailTexto(String destinatario,String assunto, String mensagem) {
 			
