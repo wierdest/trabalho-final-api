@@ -20,6 +20,7 @@ import br.org.serratec.api.cel.model.Produto;
 
 import br.org.serratec.api.cel.repository.ItemPedidoRepository;
 import br.org.serratec.api.cel.repository.PedidoRepository;
+import io.swagger.v3.core.util.Json;
 import jakarta.validation.Valid;
 
 @Service
@@ -27,7 +28,6 @@ public class PedidoService {
 
 	@Autowired
 	ConverteJSON conversorJSON;
-
 
 	@Autowired
 	ProdutoService produtoService;
@@ -43,7 +43,7 @@ public class PedidoService {
 
 	@Autowired
 	EmailService emailService;
-
+	
 
 	public Page<PedidoDto> obterTodos(Pageable pageable) {
 		Page<PedidoDto> pedidos = pedidoRepositorio.findAll(pageable).map(c ->
@@ -71,9 +71,7 @@ public class PedidoService {
 
 		for (ItemPedidoDto i : pedido.itensPedido()) {
 
-			
 			Produto produto = produtoService.buscarProdutoPorIdPedido(i.produto().id());
-
 
 			ItemPedido item = i.toEntity();
 	
@@ -95,11 +93,16 @@ public class PedidoService {
 		pedidoACadastrar.setValorTotal(valorTotal);
 
 		pedidoRepositorio.save(pedidoACadastrar);
+		
+		PedidoDto pedidoDto = PedidoDto.toDto(pedidoACadastrar);
+				
+		emailService.enviarEmailTexto(cliente.getEmail(), 
+				"Relatório de Pedido",
+				// coloca no corpo do email um JSON string
+				conversorJSON.converterParaJson(pedidoDto.toRelatorio())
+				);
 
-		emailService.enviarEmailTexto(cliente.getEmail(), "Relatório de Pedido",
-				"Você está recebendo um email de cadastro");
-
-		return PedidoDto.toDto(pedidoACadastrar);
+		return pedidoDto;
 
 	}
 
@@ -163,6 +166,7 @@ public class PedidoService {
 			Double valorTotal = pedido.getItensPedido().stream().mapToDouble(ItemPedido::getValorLiquido).sum();
 
 			pedido.setValorTotal(valorTotal);
+			pedidoRepositorio.save(pedido);
 			return Optional.of(ItemPedidoDto.toDto(item));
 
 		}

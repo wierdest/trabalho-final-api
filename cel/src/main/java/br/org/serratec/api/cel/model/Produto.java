@@ -32,10 +32,9 @@ public class Produto {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "produto")
-
-	private List<ItemPedido> itemPedido;
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "produto")
+//	private List<ItemPedido> itemPedido;
 	
 	public Produto() {}
 
@@ -116,13 +115,13 @@ public class Produto {
 		this.categoria = categoria;
 	}
 
-	public List<ItemPedido> getItemPedido() {
-		return itemPedido;
-	}
-
-	public void setItemPedido(List<ItemPedido> itemPedido) {
-		this.itemPedido = itemPedido;
-	}
+//	public List<ItemPedido> getItemPedido() {
+//		return itemPedido;
+//	}
+//
+//	public void setItemPedido(List<ItemPedido> itemPedido) {
+//		this.itemPedido = itemPedido;
+//	}
 	
 	
 	

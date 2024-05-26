@@ -42,9 +42,12 @@ public class ClienteService {
 			
 			clienteEntity = criaClienteNovoComEndereco(cliente);
 			
+			ClienteDTO dto = ClienteDTO.toDto(repositorio.save(clienteEntity));
+			
 			emailService.enviarEmailTexto(clienteEntity.getEmail(), 
-					"Novo usuario dacastrado", 
-					"Você está recebendo um email de cadastro");
+					"Novo usuario cadastrado",
+					conversorJSON.converterParaJson(dto)
+					);
 			
 			return ClienteDTO.toDto(repositorio.save(clienteEntity));
 			

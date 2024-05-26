@@ -27,7 +27,7 @@ public class ItemPedido {
 	@JsonBackReference
     private Pedido pedido;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Produto produto;
 
 	

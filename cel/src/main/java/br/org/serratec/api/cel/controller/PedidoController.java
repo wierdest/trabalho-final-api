@@ -22,6 +22,8 @@ import br.org.serratec.api.cel.dtos.ItemPedidoDto;
 import br.org.serratec.api.cel.dtos.PedidoDto;
 import br.org.serratec.api.cel.dtos.RelatorioPedidoDTO;
 import br.org.serratec.api.cel.service.PedidoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 
 @RestController
@@ -32,12 +34,16 @@ public class PedidoController {
 	PedidoService servico;
 	
 	@GetMapping
+	@Operation(description="Endpoint para CONSULTAR todos os pedidos do database! Retorna um Pageable de size 2!")
 	public ResponseEntity<Page<PedidoDto>> obterTodos(
-			@PageableDefault(size=2, page=0, sort="id", direction=Sort.Direction.ASC) Pageable pageable) {
+			@PageableDefault(size=2, page=0, sort="id", direction=Sort.Direction.ASC)
+			@Parameter(hidden=true)
+			Pageable pageable) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
+	@Operation(description="Endpoint para CONSULTAR um PEDIDO, pesquisando pela ID!")
 	public ResponseEntity<PedidoDto> obterPedidoPorId(@PathVariable Long id) {
 		Optional<PedidoDto> pedidoDto = servico.obterPedidoPorId(id);
 		if(pedidoDto.isPresent()) {
@@ -47,6 +53,8 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/relatorio-pedido/{id}")
+	@Operation(description="Endpoint para CONSULTAR um RELATóRIO DO PEDIDO pesquisando pela ID!")
+
 	public ResponseEntity<RelatorioPedidoDTO> obterRelatorioPedido(@PathVariable Long id) {
 		Optional<PedidoDto> pedidoDtoOptional= servico.obterPedidoPorId(id);
 		if(pedidoDtoOptional.isPresent()) {	
@@ -58,12 +66,10 @@ public class PedidoController {
 		return ResponseEntity.notFound().build();
 	}
 
-	
 //	@PostMapping
 //	public ResponseEntity<PedidoDto> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){
 //		return new ResponseEntity<PedidoDto>(servico.cadastrarPedido(pedido), HttpStatus.CREATED);
 //	}
-
 
 	@PostMapping
     public ResponseEntity<RelatorioPedidoDTO> cadastrarPedido(@RequestBody @Valid PedidoDto pedido){

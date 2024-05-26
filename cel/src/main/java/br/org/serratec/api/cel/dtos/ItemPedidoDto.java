@@ -17,16 +17,16 @@ public record ItemPedidoDto(
 		int quantidade,
 		@DecimalMin(value = "0.0", inclusive = false, message = "O preço de venda deve ser positivo.")
 		double precoVenda,
-		@DecimalMin(value = "0.0", message = "O percentual de desconto não pode ser negativo.")
+		// @DecimalMin(value = "0.0", message = "O percentual de desconto não pode ser negativo.")
         @DecimalMax(value = "100.0", message = "O percentual de desconto não pode ser superior a 100%.")
 		double percentualDesconto,
-		@DecimalMin(value = "0.0", inclusive = false, message = "O valor bruto deve ser positivo.")
+		// @DecimalMin(value = "0.0", inclusive = false, message = "O valor bruto deve ser positivo.")
 		double valorBruto,
-        @DecimalMin(value = "0.0", inclusive = false, message = "O valor líquido deve ser positivo.")
+        // @DecimalMin(value = "0.0", inclusive = false, message = "O valor líquido deve ser positivo.")
 		double valorLiquido,
-		@NotNull(message = "O pedido deverá ser selecionado.")
+		// @NotNull(message = "O pedido deverá ser selecionado.")
 		PedidoDto pedido,
-		@NotNull(message = "O produto deverá ser selecionado.")
+		// @NotNull(message = "O produto deverá ser selecionado.")
 		ProdutoDto produto
 		) {
 	

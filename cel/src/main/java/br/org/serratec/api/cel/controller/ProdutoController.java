@@ -36,7 +36,6 @@ public class ProdutoController {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
 	
-	/*
 	@GetMapping("/{id}")
 	public ResponseEntity<ProdutoDto> obterProdutoPorId(@PathVariable Long id) {
 		Optional<ProdutoDto> produtoDto = servico.obterPorId(id);
@@ -45,14 +44,14 @@ public class ProdutoController {
 		}		
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 	}
-	*/
+	
 	@PostMapping
 	public ResponseEntity<ProdutoDto> cadastrarProduto(@RequestBody @Valid ProdutoDto produto){
 		return new ResponseEntity<ProdutoDto>(servico.cadastrar(produto), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ProdutoDto> atulizarProduto(@PathVariable Long id, @RequestBody @Valid ProdutoDto produto){
+	public ResponseEntity<ProdutoDto> atualizarProduto(@PathVariable Long id, @RequestBody @Valid ProdutoDto produto){
 		Optional<ProdutoDto> produtoDto = servico.atualizar(id, produto);
 		if(produtoDto.isEmpty()) {
 			return ResponseEntity.notFound().build();
@@ -65,7 +64,6 @@ public class ProdutoController {
 		if(!servico.deletar(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		
 		return ResponseEntity.noContent().build();
 	}
 }
