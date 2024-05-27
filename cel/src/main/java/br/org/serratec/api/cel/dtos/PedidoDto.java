@@ -16,11 +16,11 @@ import jakarta.validation.constraints.PastOrPresent;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record PedidoDto(
 		Long id,
-		@NotNull
-        @PastOrPresent(message = "A data do pedido não pode ser retroativa à data atual.")
+		// @NotNull
+        // @PastOrPresent(message = "A data do pedido não pode ser retroativa à data atual.")
 		LocalDate dataPedido,
-		@NotNull
-        @Future(message = "A data da entrega deve ser posterior à data atual.")
+		// @NotNull
+        // @Future(message = "A data da entrega deve ser posterior à data atual.")
 		LocalDate dataEntrega,
 		@NotBlank(message = "O status não pode estar em branco.")
 		String status,
@@ -51,6 +51,7 @@ public record PedidoDto(
 		return new RelatorioPedidoDTO(
 				this.id,
 				this.dataPedido,
+				this.dataEntrega,
 				this.valorTotal,
 				itensRelatorio
 				);	
