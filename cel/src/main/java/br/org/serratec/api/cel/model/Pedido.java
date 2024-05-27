@@ -67,7 +67,7 @@ public class Pedido {
 	}
 
 	public void setDataPedido(LocalDate dataPedido) {
-		this.dataPedido = dataPedido;
+		this.dataPedido = LocalDate.now();
 	}
 
 	public LocalDate getDataEntrega() {
@@ -75,7 +75,8 @@ public class Pedido {
 	}
 
 	public void setDataEntrega(LocalDate dataEntrega) {
-		this.dataEntrega = dataEntrega;
+		
+		this.dataEntrega = LocalDate.now().plusDays(2);
 	}
 
 	public String getStatus() {
