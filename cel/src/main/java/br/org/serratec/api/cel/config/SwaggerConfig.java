@@ -50,39 +50,4 @@ public class SwaggerConfig {
 				
 		
 	}
-	
-	@SuppressWarnings("deprecation")
-	@Bean
-    public Docket api() {
-        List<springfox.documentation.service.Parameter> globalParameters = new ArrayList<>();
-        globalParameters.add(new ParameterBuilder()
-                .name("page")
-                .description("Page number")
-                .modelRef(new ModelRef("int"))
-                .parameterType("query")
-                .required(false)
-                .defaultValue("2")
-                .build());
-        globalParameters.add(new ParameterBuilder()
-                .name("size")
-                .description("Page size")
-                .modelRef(new ModelRef("int"))
-                .parameterType("query")
-                .required(false)
-                .defaultValue("20")
-                .build());
-        globalParameters.add(new ParameterBuilder()
-                .name("sort")
-                .description("Sort criteria")
-                .modelRef(new ModelRef("string"))
-                .parameterType("query")
-                .required(false)
-                .build());
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("br.org.serratec.api.cel.controller"))
-                .build()
-                .globalOperationParameters(globalParameters);
-    }
 }
