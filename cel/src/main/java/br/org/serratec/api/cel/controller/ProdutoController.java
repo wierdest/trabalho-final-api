@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.api.cel.dtos.ProdutoDto;
 import br.org.serratec.api.cel.service.ProdutoService;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,7 +32,9 @@ public class ProdutoController {
 	
 	@GetMapping
 	public ResponseEntity<Page<ProdutoDto>> obterTodos(
-			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) Pageable pageable
+			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) 
+			@Parameter(hidden=true)
+			Pageable pageable
 			) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
