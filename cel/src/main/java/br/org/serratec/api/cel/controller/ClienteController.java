@@ -2,6 +2,7 @@ package br.org.serratec.api.cel.controller;
 
 
 
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,7 @@ public class ClienteController {
 	
 	@GetMapping
 	@Operation(description="Endpoint para CONSULTAR todos os clientes do database!")
+	@PageableAsQueryParam
 	public ResponseEntity<Page<ClienteDTO>> obterTodos(
 			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC)
 			// esconde a opção no swagger
@@ -54,7 +56,6 @@ public class ClienteController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	
 	@Operation(description="Endpoint para CADASTRAR um cliente no database!")
 	@PostMapping
 	public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO cliente) {

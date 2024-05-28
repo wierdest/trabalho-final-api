@@ -45,7 +45,7 @@ public class ProdutoService {
 	}
 
 	public Produto buscarProdutoPorIdPedido(Long id) {
-        return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        return repositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
     }
 	
 	public ProdutoDto cadastrar(ProdutoDto produto) {

@@ -2,6 +2,7 @@ package br.org.serratec.api.cel.controller;
 
 import java.util.Optional;
 
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,10 +32,12 @@ public class ProdutoController {
 	ProdutoService servico;
 	
 	@GetMapping
+	@PageableAsQueryParam
 	public ResponseEntity<Page<ProdutoDto>> obterTodos(
 			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) 
 			@Parameter(hidden=true)
 			Pageable pageable
+
 			) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
