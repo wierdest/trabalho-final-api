@@ -96,11 +96,18 @@ public class PedidoService {
 		
 		PedidoDto pedidoDto = PedidoDto.toDto(pedidoACadastrar);
 				
-		emailService.enviarEmailTexto(cliente.getEmail(), 
+//		emailService.enviarEmailTexto(cliente.getEmail(), 
+//				"Relatório de Pedido",
+//				// coloca no corpo do email um JSON string
+//				conversorJSON.converterParaJson(pedidoDto.toRelatorio())
+//				
+//				);
+		
+		emailService.enviarEmailHtml(cliente.getEmail(), 
 				"Relatório de Pedido",
-				// coloca no corpo do email um JSON string
-				conversorJSON.converterParaJson(pedidoDto.toRelatorio())
+				GeradorRelatorioHtml.gerarHtmlRelatorio(pedidoDto.toRelatorio())
 				);
+
 
 		return pedidoDto;
 

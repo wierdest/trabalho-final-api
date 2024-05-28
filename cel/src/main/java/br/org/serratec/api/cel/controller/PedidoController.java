@@ -2,6 +2,7 @@ package br.org.serratec.api.cel.controller;
 
 import java.util.Optional;
 
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,7 @@ public class PedidoController {
 	
 	@GetMapping
 	@Operation(description="Endpoint para CONSULTAR todos os pedidos do database! Retorna um Pageable de size 2!")
+	@PageableAsQueryParam
 	public ResponseEntity<Page<PedidoDto>> obterTodos(
 			@PageableDefault(size=2, page=0, sort="id", direction=Sort.Direction.ASC)
 			@Parameter(hidden=true)

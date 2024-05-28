@@ -25,7 +25,7 @@ public class SecurityConfig {
 			)
 			.httpBasic(Customizer.withDefaults())
 			.formLogin(Customizer.withDefaults())
-			 .csrf(csrf -> csrf.disable() ) // Não recomendado, mas feito pro POST funcionar!
+			.csrf(csrf -> csrf.disable()) // Não recomendado, mas feito pro POST funcionar!
 			;
 
 		return http.build();
