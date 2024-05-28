@@ -37,7 +37,7 @@ public class ProdutoController {
 			@PageableDefault(size=2, page=0, sort="nome", direction=Sort.Direction.ASC) 
 			@Parameter(hidden=true)
 			Pageable pageable
-			
+
 			) {
 		return new ResponseEntity<>(servico.obterTodos(pageable), HttpStatus.OK);
 	}
